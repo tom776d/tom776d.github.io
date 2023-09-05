@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>最終プレゼン</title>
+  <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+  <header>
+    <h1 id="headertitle">プログラミング基礎講習 最終プレゼン</h1>
+    <h2 id="headername">05_tomonori_sato</h2>
+    <h2 id="headertema">テーマ：在庫管理ができるページの作成</h2>
+  </header>
+
+  <article class="punctuation">
+    <h2>理由</h2>
+    <ul>
+      <li>受講中今取り組んでいる仕事の中で<strong>ローカル環境で使える在庫管理アプリ</strong>を作る必要ができた</li>
+      <li>objectを教わる中で、<strong>在庫管理にピッタリではないか！</strong>と思い取り組むことにした</li>
+      <li>まだまだ作成途中ですがよろしくお願いします</li>
+    </ul>
+  </article>
+
+  <article class="punctuation">
+    <h2>構想</h2>
+    <img src="全体像.jpg" alt="全体像">
+  </article>
+
+  <article class="punctuation">
+    <h2 id="title">危険物倉庫在庫管理システム（作成途中）</h2>
+  </article>
+
+  <article class="stockDataSystem">
+
+    <input type="date" id="stockDate"></input>
+
+    <form name="form1" id="myForm">
+      <select name="place" required>
+        <option value="">-選択してください-</option>
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="A3">A3</option>
+        <option value="A4">A4</option>
+        <option value="B1">B1</option>
+        <option value="B2">B2</option>
+        <option value="B3">B3</option>
+        <option value="B4">B4</option>
+        <option value="C1">C1</option>
+        <option value="C2">C2</option>
+        <option value="C3">C3</option>
+        <option value="C4">C4</option>
+      </select>
+    </form>
+    <button type="submit" id="button">送信</button>
+
+    <div class="table">
+      <h2>A</h2>
+      </form>
+      <table border="1" <tr>
+        <th>  場所  </th>
+        <th>  入庫日  </th>
+        <th>  期限日  </th>
+        <th>  ライン  </th>
+        </tr>
+        <tr>
+          <th>A1</th>
+          <th id="arrivalDateA1"></th>
+          <th id="dueDateA1"></th>
+          <th id="lineA1"></th>
+        </tr>
+        <tr>
+          <th>A2</th>
+          <th id="arrivalDateA2"></th>
+          <th id="dueDateA2"></th>
+          <th id="lineA2"></th>
+        </tr>
+        <tr>
+          <th>A3</th>
+          <th id="arrivalDateA3"></th>
+          <th id="dueDateA3"></th>
+          <th id="lineA3"></th>
+        </tr>
+        <tr>
+          <th>A4</th>
+          <th id="arrivalDateA4"></th>
+          <th id="dueDateA4"></th>
+          <th id="lineA4"></th>
+        </tr>
+      </table>
+    </div>
+
+    <div class="table">
+      <h2>B</h2>
+      </form>
+      <table border="1" <tr>
+        <th>  場所  </th>
+        <th>  入庫日  </th>
+        <th>  期限日  </th>
+        <th>  ライン  </th>
+        </tr>
+        <tr>
+          <th>B1</th>
+          <th id="arrivalDateB1"></th>
+          <th id="dueDateB1"></th>
+          <th id="lineB1"></th>
+        </tr>
+        <tr>
+          <th>B2</th>
+          <th id="arrivalDateB2"></th>
+          <th id="dueDateB2"></th>
+          <th id="lineB2"></th>
+        </tr>
+        <tr>
+          <th>B3</th>
+          <th id="arrivalDateB3"></th>
+          <th id="dueDateB3"></th>
+          <th id="lineB3"></th>
+        </tr>
+        <tr>
+          <th>B4</th>
+          <th id="arrivalDateB4"></th>
+          <th id="dueDateB4"></th>
+          <th id="lineB4"></th>
+        </tr>
+      </table>
+    </div>
+
+    <div class="table">
+      <h2>C</h2>
+      </form>
+      <table border="1" <tr>
+        <th>  場所  </th>
+        <th>  入庫日  </th>
+        <th>  期限日  </th>
+        <th>  ライン  </th>
+        </tr>
+        <tr>
+          <th>C1</th>
+          <th id="arrivalDateC1"></th>
+          <th id="dueDateC1"></th>
+          <th id="lineC1"></th>
+        </tr>
+        <tr>
+          <th>C2</th>
+          <th id="arrivalDateC2"></th>
+          <th id="dueDateC2"></th>
+          <th id="lineC2"></th>
+        </tr>
+        <tr>
+          <th>C3</th>
+          <th id="arrivalDateC3"></th>
+          <th id="dueDateC3"></th>
+          <th id="lineC3"></th>
+        </tr>
+        <tr>
+          <th>C4</th>
+          <th id="arrivalDateC4"></th>
+          <th id="dueDateC4"></th>
+          <th id="lineC4"></th>
+        </tr>
+      </table>
+    </div>
+
+  </article>
+
+
+  <article class="punctuation">
+    <h2>今後の課題</h2>
+    <ul>
+      <li>出庫処理とcsvファイルとの連携を構築していく</li>
+      <li>入力デバイスへの対応</li>
+      <li>使いやすくてかっこいいデザイン</li>
+    </ul>
+  </article>
+
+  <article class="punctuation">
+    <h2>最後に</h2>
+
+    <p>HTML・CSS・javascriptといった今までの自分からしたら想像もつかない事を,</p>
+    <p>この短期間で習得できたことに、講師陣の方、FND19メンバー、自職場のメンバー</p>
+    <p>あっての私だと深く感謝を申し上げます。ありがとうございました！！</p>
+
+
+  </article>
+
+
+
+  <script type="text/javascript" src="script.js"></script>
+</body>
+
+</html>
