@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+html {
+  background-color: #95dfc0;
+}
+
+.stockDataSystem {
+  background-color: rgb(248, 248, 250);
+  width: 800px;
+  height: 750px;
+  margin-left: 350px;
+  padding: 50px 50px 50px 50px;
+}
+
+p {
+  line-height: 1.7;
+  margin-left: 100px;
+  font-size: larger;
+}
+
+li {
+  line-height: 1.7;
+  margin-left: 100px;
+}
+
+img {
+  display: block;
+  margin-left: 300px;
+  width: 600px;
+  height: 500px;
+}
+
+.punctuation{
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+li{
+  font-size: larger;
+}
+
+table{
+  table-layout: fixed;
+  float: left;
+}
+
+th{
+  width: 500px;
+  margin-left: 50px;
+}
