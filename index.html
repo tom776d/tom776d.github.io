@@ -10,9 +10,10 @@
 
 <body>
   <header>
-    <h1 id="headertitle">プログラミング基礎講習 最終プレゼン</h1>
-    <h2 id="headername">05_tomonori_sato</h2>
-    <h2 id="headertema">テーマ：在庫管理ができるページの作成</h2>
+    <h1 class="header"><span class="span">プログラミング基礎講習FND19</span><span class="span"> 最終プレゼン</span></h1>
+    <h2 class="name"><span class="span">衣浦工場</span><span class="span">駆動H・EV製造技術部</span><span
+        class="span">工場支援室</span><span class="span">佐藤 朋典</h2>
+    <h2 class="theme">テーマ：在庫管理ができるページの作成</h2>
   </header>
 
   <article class="punctuation">
@@ -35,11 +36,11 @@
 
   <article class="stockDataSystem">
 
-    <input type="date" id="stockDate"></input>
+    <input type="date" id="stockDate" style="font: size 1.2em" class="form"></input>
 
     <form name="form1" id="myForm">
-      <select name="place" required>
-        <option value="">-選択してください-</option>
+      <select name="place" class="form" required>
+        <option value="">-場所を選択-</option>
         <option value="A1">A1</option>
         <option value="A2">A2</option>
         <option value="A3">A3</option>
@@ -54,16 +55,17 @@
         <option value="C4">C4</option>
       </select>
     </form>
-    <button type="submit" id="button">送信</button>
+    <button type="submit" id="button1">入庫</button>
+    <button type="submit" id="button2">使用</button>
 
     <div class="table">
       <h2>A</h2>
       </form>
       <table border="1" <tr>
-        <th>  場所  </th>
-        <th>  入庫日  </th>
-        <th>  期限日  </th>
-        <th>  ライン  </th>
+        <th> 場所 </th>
+        <th> 入庫日 </th>
+        <th> 期限日 </th>
+        <th> ライン </th>
         </tr>
         <tr>
           <th>A1</th>
@@ -96,10 +98,10 @@
       <h2>B</h2>
       </form>
       <table border="1" <tr>
-        <th>  場所  </th>
-        <th>  入庫日  </th>
-        <th>  期限日  </th>
-        <th>  ライン  </th>
+        <th> 場所 </th>
+        <th> 入庫日 </th>
+        <th> 期限日 </th>
+        <th> ライン </th>
         </tr>
         <tr>
           <th>B1</th>
@@ -132,10 +134,10 @@
       <h2>C</h2>
       </form>
       <table border="1" <tr>
-        <th>  場所  </th>
-        <th>  入庫日  </th>
-        <th>  期限日  </th>
-        <th>  ライン  </th>
+        <th> 場所 </th>
+        <th> 入庫日 </th>
+        <th> 期限日 </th>
+        <th> ライン </th>
         </tr>
         <tr>
           <th>C1</th>
@@ -178,15 +180,11 @@
 
   <article class="punctuation">
     <h2>最後に</h2>
-
     <p>HTML・CSS・javascriptといった今までの自分からしたら想像もつかない事を,</p>
     <p>この短期間で習得できたことに、講師陣の方、FND19メンバー、自職場のメンバー</p>
-    <p>あっての私だと深く感謝を申し上げます。ありがとうございました！！</p>
-
-
+    <p>あっての私だと深く感謝を申し上げます。</p>
+    <h1 class="greet"><strong>ありがとうございました！！</strong></h1>
   </article>
-
-
 
   <script type="text/javascript" src="script.js"></script>
 </body>
