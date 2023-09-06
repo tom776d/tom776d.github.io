@@ -48,3 +48,58 @@ th{
   width: 500px;
   margin-left: 50px;
 }
+
+.greet{
+  text-align:center;
+  font-size: 30px;
+}
+
+.header{
+  display: inline-block;
+  margin: 50px;
+  font-size: 40px;
+}
+
+.theme{
+  margin-left: 30px;
+  font-size: 30px;
+}
+
+.name{
+  text-align:right;
+  margin-right: 50px;
+}
+
+.span{
+  margin-right: 20px;
+}
+
+#button1{
+  background-color: blue;
+  color: white;
+  width: 100px;
+  height: 50px;
+  margin-left: 50px;
+}
+
+#button2{
+  background-color: rgb(218, 150, 61);
+  color: rgb(19, 17, 17);
+  width: 100px;
+  height: 50px;
+  margin-left: 50px;
+}
+
+#stockDate{
+  width: 200px;
+  height: 50px;
+
+}
+
+.form{
+  width: 200px;
+  height: 53px;
+  font-size: 20px;
+  float: left;
+  margin-left: 30px;
+}
