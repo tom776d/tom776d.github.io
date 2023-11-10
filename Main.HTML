@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DangerousWarehouse</title>
+  <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+  </div>
+  <div class="container">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item">
+      <!--<input type="text" name="inputdata" id="inputdata" style="font: size 1.2em" class="daviceinputform"></input>-->
+    </div>
+    <div class="item">
+      <p class="display" id="connectionConfirmation"></p>
+    </div>
+    <div class="item">
+      <input type="date" id="stockDate" class="inputDate"></input>
+    </div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item">
+      <p class="display" id="varnish"></p>
+    </div>
+    <div class="item">
+      <p class="display" id="inHighVarnishP7"></p>
+    </div>
+    <div class="item">
+      <p class="display" id="inHighVarnishP8"></p>
+    </div>
+    <div class="item">
+      <p class="display" id="varnishP7"></p>
+    </div>
+    <div class="item">
+      <p class="display" id="highVarnishP7"></p>
+    </div>
+    <div class="item">
+      <p class="display" id="varnishP8"></p>
+    </div>
+    <div class="item">
+      <p class="display" id="highVarnishP8"></p>
+    </div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item">
+      <button type="submit" id="button11" class="inCataP7">P7<BR>入庫</button>
+    </div>
+    <div class="item">
+      <button type="submit" id="button12" class="outCataP7">P7<BR>出庫</button>
+    </div>
+    <div class="item" id="highVarnishA2">
+      <p class="highVarnish" id="highVarnishDueDateA2"></p>
+      <img src="indication2.jpg" class="highVarnishCan" id="highVarnishImageA2"></img>
+    </div>
+    <div class="item" id="highVarnishA4">
+      <p class="highVarnish" id="highVarnishDueDateA4"></p>
+      <img src="indication2.jpg" class="highVarnishCan" id="highVarnishImageA4"></img>
+    </div>
+    <div class="item" id="highVarnishB2">
+      <p class="highVarnish" id="highVarnishDueDateB2"></p>
+      <img src="indication2.jpg" class="highVarnishCan" id="highVarnishImageB2"></img>
+    </div>
+
+    <div class="item" id="highVarnishB4">
+      <p class="highVarnish" id="highVarnishDueDateB4"></p>
+      <img src="indication2.jpg" class="highVarnishCan" id="highVarnishImageB4"></img>
+    </div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item">
+      <button type="submit" id="button13" class="inCataP8">P8<BR>入庫</button>
+    </div>
+    <div class="item">
+      <button type="submit" id="button14" class="outCataP8">P8<BR>出庫</button>
+    </div>
+    <div class="item" id="highVarnishA1">
+      <p class="highVarnish" id="highVarnishDueDateA1"></p>
+      <img src="indication1.jpg" class="highVarnishCan" id="highVarnishImageA1"></img>
+    </div>
+    <div class="item" id="highVarnishA3">
+      <p class="highVarnish" id="highVarnishDueDateA3"></p>
+      <img src="indication2.jpg" class="highVarnishCan" id="highVarnishImageA3"></img>
+    </div>
+    <div class="item" id="highVarnishB1">
+      <p class="highVarnish" id="highVarnishDueDateB1"></p>
+      <img src="indication1.jpg" class="highVarnishCan" id="highVarnishImageB1"></img>
+    </div>
+    <div class="item" id="highVarnishB3">
+      <p class="highVarnish" id="highVarnishDueDateB3"></p>
+      <img src="indication2.jpg" class="highVarnishCan" id="highVarnishImageB3"></img>
+    </div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item">
+      <p class="catainventory" id="cataP710"></p>
+    </div>
+    <div class="item" id="varnishA1">
+      <p class="varnish" id="varnishDueDateA1"></p>
+      <img src="indication1.jpg" class="varnishCan" ID="varnishImageA1"></img>
+    </div>
+    <div class="item" id="varnishA2">
+      <p class="varnish" id="varnishDueDateA2"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageA2"></img>
+    </div>
+    <div class="item" id="varnishB1">
+      <p class="varnish" id="varnishDueDateB1"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageB1"></img>
+    </div>
+    <div class="item" id="varnishB2">
+      <p class="varnish" id="varnishDueDateB2"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageB2"></img>
+    </div>
+    <div class="item" id="varnishC1">
+      <p class="varnish" id="varnishDueDateC1"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageC1"></img>
+    </div>
+    <div class="item" id="varnishC2">
+      <p class="varnish" id="varnishDueDateC2"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageC2"></img>
+    </div>
+    <div class="item"></div>
+    <div class="item">
+      <p class="catainventory" id="cataP810"></p>
+    </div>
+    <div class="item" id="varnishA3">
+      <p class="varnish" id="varnishDueDateA3"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageA3"></img>
+    </div>
+    <div class="item" id="varnishA4">
+      <p class="varnish" id="varnishDueDateA4"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageA4"></img>
+    </div>
+    <div class="item" id="varnishB3">
+      <p class="varnish" id="varnishDueDateB3"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageB3"></img>
+    </div>
+    <div class="item" id="varnishB4">
+      <p class="varnish" id="varnishDueDateB4"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageB4"></img>
+    </div>
+    <div class="item" id="varnishC3">
+      <p class="varnish" id="varnishDueDateC3"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageC3"></img>
+    </div>
+    <div class="item" id="varnishC4">
+      <p class="varnish" id="varnishDueDateC4"></p>
+      <img src="indication2.jpg" class="varnishCan" ID="varnishImageC4"></img>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button3" class="varnishInP7">P7<BR>ワニス入庫</button>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button4" class="varnishOutP7">P7<BR>ワニス出庫</button>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button5" class="varnishInP8">P8<BR>ワニス入庫</button>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button6" class="varnishOutP8">P8<BR>ワニス出庫</button>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button7" class="highVarnishInP7">P7<BR>高粘度入庫</button>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button8" class="highVarnishOutP7">P7<BR>高粘度出庫</button>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button9" class="highVarnishInP8">P8<BR>高粘度入庫</button>
+    </div>
+    <div class="selecteditem">
+      <button type="submit" id="button10" class="highVarnishOutP8">P8<BR>高粘度出庫</button>
+    </div>
+    <div class="item">
+      <button type="submit" id="button15" class="clear">全リセット</button>
+    </div>
+    <label class="toggle-switch">
+      <span class="title">ボタン表示</span>
+      <input type="checkbox" id="toggleButton" onclick="toggleAllVisibility()">
+      <span class="slider"></span>
+    </label>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="selecteditem">
+      <p class="title">高粘度ワニス期限日</p>
+    </div>
+    <div class="selecteditem">
+      <input type="date" id="dueDate" class="inputDueDate"></input>
+    </div>
+    <div class="item"></div>
+
+  </div>
+  <!--
+  <article class="stockDataSystem">
+
+
+    <form name="form1" id="myForm">
+      <select name="place" class="form" required>
+        <option value="">-場所を選択-</option>
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="A3">A3</option>
+        <option value="A4">A4</option>
+        <option value="B1">B1</option>
+        <option value="B2">B2</option>
+        <option value="B3">B3</option>
+        <option value="B4">B4</option>
+        <option value="C1">C1</option>
+        <option value="C2">C2</option>
+        <option value="C3">C3</option>
+        <option value="C4">C4</option>
+      </select>
+    </form>
+    <button type="submit" id="button1">入庫</button>
+    <button type="submit" id="button2">使用</button>
+
+    <div class="table">
+      <h2>A</h2>
+      </form>
+      <table border="1" <tr>
+        <th> 場所 </th>
+        <th> 入庫日 </th>
+        <th> 期限日 </th>
+        <th> ライン </th>
+        </tr>
+        <tr>
+          <th>A1</th>
+          <th id="arrivalDateA1"></th>
+          <th id="dueDateA1"></th>
+          <th id="lineA1"></th>
+        </tr>
+        <tr>
+          <th>A2</th>
+          <th id="arrivalDateA2"></th>
+          <th id="dueDateA2"></th>
+          <th id="lineA2"></th>
+        </tr>
+        <tr>
+          <th>A3</th>
+          <th id="arrivalDateA3"></th>
+          <th id="dueDateA3"></th>
+          <th id="lineA3"></th>
+        </tr>
+        <tr>
+          <th>A4</th>
+          <th id="arrivalDateA4"></th>
+          <th id="dueDateA4"></th>
+          <th id="lineA4"></th>
+        </tr>
+      </table>
+    </div>
+
+    <div class="table">
+      <h2>B</h2>
+      </form>
+      <table border="1" <tr>
+        <th> 場所 </th>
+        <th> 入庫日 </th>
+        <th> 期限日 </th>
+        <th> ライン </th>
+        </tr>
+        <tr>
+          <th>B1</th>
+          <th id="arrivalDateB1"></th>
+          <th id="dueDateB1"></th>
+          <th id="lineB1"></th>
+        </tr>
+        <tr>
+          <th>B2</th>
+          <th id="arrivalDateB2"></th>
+          <th id="dueDateB2"></th>
+          <th id="lineB2"></th>
+        </tr>
+        <tr>
+          <th>B3</th>
+          <th id="arrivalDateB3"></th>
+          <th id="dueDateB3"></th>
+          <th id="lineB3"></th>
+        </tr>
+        <tr>
+          <th>B4</th>
+          <th id="arrivalDateB4"></th>
+          <th id="dueDateB4"></th>
+          <th id="lineB4"></th>
+        </tr>
+      </table>
+    </div>
+
+    <div class="table">
+      <h2>C</h2>
+      </form>
+      <table border="1" <tr>
+        <th> 場所 </th>
+        <th> 入庫日 </th>
+        <th> 期限日 </th>
+        <th> ライン </th>
+        </tr>
+        <tr>
+          <th>C1</th>
+          <th id="arrivalDateC1"></th>
+          <th id="dueDateC1"></th>
+          <th id="lineC1"></th>
+        </tr>
+        <tr>
+          <th>C2</th>
+          <th id="arrivalDateC2"></th>
+          <th id="dueDateC2"></th>
+          <th id="lineC2"></th>
+        </tr>
+        <tr>
+          <th>C3</th>
+          <th id="arrivalDateC3"></th>
+          <th id="dueDateC3"></th>
+          <th id="lineC3"></th>
+        </tr>
+        <tr>
+          <th>C4</th>
+          <th id="arrivalDateC4"></th>
+          <th id="dueDateC4"></th>
+          <th id="lineC4"></th>
+        </tr>
+      </table>
+    </div>
+
+  </article>
+-->
+  <script type="text/javascript" src="script/script.js"></script>
+
+
+</body>
+
+</html>
