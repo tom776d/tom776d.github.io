@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+body {
+    background-image: url("warningP8.jpg");
+    background-repeat: no-repeat;
+    background-size: 740px 460px;
+}
+
+.close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    width: 150px;
+    margin-top: 370px;
+    margin-left: 295px;
+    padding: 1em 2em;
+    border: 1px solid #e7e7e7;
+    border-radius: 5px;
+    box-shadow: 6px 6px 12px #272623, -6px -6px 12px #3f3434;
+    background-color: rgb(238, 80, 59);
+    color: rgb(252, 249, 249);
+    font-size: 15px;
+}
+
+.close:hover {
+    box-shadow: inset 4px 4px 12px #fa0505, inset -4px -4px 12px #b30d28;
+}
+
+.close:active {
+    -webkit-transform: translate(0, 2px);
+    -moz-transform: translate(0, 2px);
+    transform: translate(0, 2px);
+    border-bottom: none;
+}
