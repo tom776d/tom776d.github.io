@@ -736,12 +736,18 @@ socket.onmessage = (event) => {
   // Pythonサーバーからデータを受信したときの処理
   let data = event.data;
   console.log('受信したデータ:', data);
-  data = data.slice(1);
-  console.log(data);
+  if(data.startsWith(",")){
+    data = data.slice(1);
+    console.log(data);
+  }
+  else{
+    //年月日情報をyyyy/mm/dd形式に変更
+    let strA = data.slice(0,4);
+    let strB = data.slice(4,6);
+    let strC = data.slice(6);
+    data = strA + "/" + strB + "/" + strC;
+  }
   csvData = data.split(",");
-  // csvData.pop(); //改行の\nを除外
-  // let csvString = csvData.join(",");  //一旦カンマ区切りの文字列へ戻す
-  // csvData = csvString.split(",");  //カンマ区切りで配列へ格納
   console.log(csvData);
   inputCsvData(csvData);
 };
