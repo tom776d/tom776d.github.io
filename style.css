@@ -4,89 +4,6 @@ html {
   background-color: #f8fcfa;
 }
 
-.stockDataSystem {
-  background-color: rgb(248, 248, 250);
-  width: 800px;
-  height: 750px;
-  margin-left: 350px;
-  padding: 50px 50px 50px 50px;
-  margin-top: 2000px;
-}
-
-li {
-  line-height: 1.7;
-  margin-left: 100px;
-}
-
-
-.punctuation {
-  margin-top: 50px;
-  margin-left: 50px;
-}
-
-li {
-  font-size: larger;
-}
-
-table {
-  table-layout: fixed;
-  float: left;
-}
-
-th {
-  width: 500px;
-  margin-left: 50px;
-}
-
-.greet {
-  text-align: center;
-  font-size: 30px;
-}
-
-.header {
-  display: inline-block;
-  margin: 50px;
-  font-size: 40px;
-}
-
-.theme {
-  margin-left: 30px;
-  font-size: 30px;
-}
-
-.name {
-  text-align: right;
-  margin-right: 50px;
-}
-
-.span {
-  margin-right: 20px;
-}
-
-#button1 {
-  background-color: blue;
-  color: white;
-  width: 100px;
-  height: 50px;
-  margin-left: 50px;
-}
-
-#button2 {
-  background-color: rgb(218, 150, 61);
-  color: rgb(19, 17, 17);
-  width: 100px;
-  height: 50px;
-  margin-left: 50px;
-}
-
-.form {
-  width: 200px;
-  height: 53px;
-  font-size: 20px;
-  float: left;
-  margin-left: 30px;
-}
-
 body {
   background-image: url("dangerousWarehouse.jpg");
   background-repeat: no-repeat;
@@ -116,7 +33,7 @@ body {
 }
 
 .highVarnishCan {
-  margin-top: -7px;
+  margin-top: -6px;
   margin-left: 30px;
   height: 40px;
   width: 25px;
@@ -155,8 +72,8 @@ body {
 }
 
 .display {
-  margin-top: 20px;
-  margin-left: 10px;
+  margin-top: 23px;
+  margin-left: 11px;
   font-size: 20px;
 }
 
@@ -203,6 +120,7 @@ body {
   height: 35px;
   width: 70px;
   margin-top: 0px;
+  margin-left: 5px;
   padding: 1em 2em;
   border: 1px solid #e7e7e7;
   border-radius: 5px;
@@ -260,6 +178,7 @@ body {
   height: 35px;
   width: 70px;
   margin-top: 15px;
+  margin-left: 5px;
   padding: 1em 2em;
   border: 1px solid #e7e7e7;
   border-radius: 5px;
@@ -412,14 +331,14 @@ body {
   padding: 1em 2em;
   border: 1px solid rgb(7, 6, 6);
   border-radius: 8px;
-  box-shadow: 6px 6px 12px #a49de7, -6px -6px 12px #fff;
+  box-shadow: 6px 6px 12px #f04d4d, -6px -6px 12px #fff;
   background-color: rgb(228, 11, 40);
   color: rgb(252, 249, 249);
   font-size: 8.5px;
 }
 
 .clear:hover {
-  box-shadow: inset 4px 4px 12px #a34039, inset -4px -4px 12px #cf568f;
+  box-shadow: inset 4px 4px 12px #a12118, inset -4px -4px 12px #58082e;
 }
 
 .clear:active {
@@ -437,7 +356,7 @@ body {
   position: relative;
   display: inline-block;
   margin-top: 70px;
-  margin-left: 30px;
+  margin-left: 50px;
   width: 50px;
   height: 20px;
   background-color: #ccc;
@@ -491,7 +410,7 @@ body {
 /* スライダータイトルのスタイル */
 .toggle-switch .title {
   position: absolute;
-  top: 0%;
+  top: -35%;
   left: 5%;
   transform: translate(0%, 0%);
   color: #333;
@@ -502,4 +421,40 @@ body {
   display: none;
   /* 初期状態で非表示 */
   margin-bottom: 10px;
+}
+
+.load {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  width: 80px;
+  margin-top: 70px;
+  margin-left: -50px;
+  padding: 1em 2em;
+  border: 1px solid rgb(7, 6, 6);
+  border-radius: 8px;
+  box-shadow: 6px 6px 12px #17116b, -6px -6px 12px #ffffff;
+  background-color: rgb(25, 11, 228);
+  color: rgb(252, 249, 249);
+  font-size: 8.5px;
+}
+
+.load:hover {
+  box-shadow: inset 4px 4px 12px #2565db, inset -4px -4px 12px #120679;
+}
+
+.load:active {
+  -webkit-transform: translate(0, 2px);
+  -moz-transform: translate(0, 2px);
+  transform: translate(0, 2px);
+  border-bottom: none;
+}
+
+#fileInput{
+  height: 35px;
+  width: 180px;
+  margin-top: 120px;
+  margin-left: 62px; 
+  font-size: 10px;
 }
