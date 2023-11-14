@@ -202,35 +202,6 @@ function inHighVarnishPlaceNumber() {
 
 }
 
-//ワニス在庫表更新///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// function screenUpdateVarnishStock() {
-//   for (const object of varnishStock) {
-//     const updateStockPlace = object.stockPlace; //オブジェクトの場所を格納
-//     const updateArrivalDate = new Date(object.arrivalDate);  //オブジェクトの入庫日を格納
-//     const updateDuedate = new Date(object.dueDate);  //オブジェクトの期限日を格納
-//     const updateLine = object.line;  //オブジェクトのラインを格納
-//     //入庫日の処理
-//     const elemArrivalDate = document.getElementById(`arrivalDate${updateStockPlace}`);  //入庫日のhtml入力先
-//     const arrivalInputDate = updateArrivalDate.toLocaleDateString('sv-SE');  //日付型の変換 
-//     if (arrivalInputDate === "Invalid Date") {  //日付型データがエラーの時（＝空白）
-//       elemArrivalDate.innerText = "";  //空白を入力
-//     } else {                           //そうでない場合
-//       elemArrivalDate.innerText = arrivalInputDate; //入庫日を入力
-//     }
-//     //期限日の処理
-//     const elemDueDate = document.getElementById(`dueDate${updateStockPlace}`);  //期限日のhtml入力先
-//     const dueInputDate = updateDuedate.toLocaleDateString('sv-SE'); //日付型の変換
-//     if (dueInputDate === "Invalid Date") {  //日付型データがエラーの時（＝空白
-//       elemDueDate.innerText = "";  //空白を入力
-//     } else {                       //そうでない場合
-//       elemDueDate.innerText = dueInputDate;  //期限日の入力
-//     }
-//     //ラインの処理
-//     const elemLine = document.getElementById(`line${updateStockPlace}`);  //ラインのhtml入力先
-//     elemLine.innerText = updateLine;  //ラインの入力
-//   }
-// }
-
 //ワニス在庫情報更新///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateStockInfoVarnish() {
   for (const object of varnishStock) {
@@ -363,7 +334,6 @@ function arrivalVanish(place, getDate, line) {
         dueDate.setDate(parsedDate.getDate() + 30);  // 30日後の日付を計算
         object.dueDate = dueDate;  //オブジェクトの期限日を格納
         object.line = line;        //オブジェクトのライン名を格納
-        //screenUpdateVarnishStock();             //在庫表更新
       } else {
         alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
       }
@@ -376,18 +346,6 @@ function arrivalVanish(place, getDate, line) {
   saveData();  //データ保存
 }
 
-//ワニス入庫ボタン1//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// const button1 = document.getElementById("button1");
-// button1.addEventListener("click", function () {  //ボタンがクリックされたとき動作
-//   const place = document.getElementById("myForm").elements.place.value; // フォームから場所を取得
-//   const getInputDate = document.getElementById("stockDate"); //
-//   const getDate = getInputDate.value; //日付データ値を格納
-//   const line = "Line"; //フォーム追加後に変更
-
-
-//   arrivalVanish(place, getDate, line);  //入庫処理 arrival 関数を呼び出す
-// });
-
 //ワニス入庫ボタン3//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const button3 = document.getElementById("button3");
 button3.addEventListener("click", function () {  //ボタンがクリックされたとき動作
@@ -395,7 +353,6 @@ button3.addEventListener("click", function () {  //ボタンがクリックさ�
   const getInputDate = document.getElementById("stockDate"); //
   const getDate = getInputDate.value; //日付データ値を格納
   const line = "P710"; //フォーム追加後に変更
-
 
   arrivalVanish(place, getDate, line);  //入庫処理 arrival 関数を呼び出す
 });
@@ -407,7 +364,6 @@ button5.addEventListener("click", function () {  //ボタンがクリックさ�
   const getInputDate = document.getElementById("stockDate"); //
   const getDate = getInputDate.value; //日付データ値を格納
   const line = "P810"; //フォーム追加後に変更
-
 
   arrivalVanish(place, getDate, line);  //入庫処理 arrival 関数を呼び出す
 });
@@ -475,7 +431,6 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
           object.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
           object.dueDate = inputDueDate;  //オブジェクトの期限日を格納
           object.line = line;        //オブジェクトのライン名を格納
-          //screenUpdateVarnishStock();             //画面更新
         } else {
           alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
         }
@@ -494,7 +449,6 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
           object.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
           object.dueDate = inputDueDate;  //オブジェクトの期限日を格納
           object.line = line;        //オブジェクトのライン名を格納
-          //screenUpdateVarnishStock();             //画面更新
         } else {
           alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
         }
@@ -515,7 +469,6 @@ function use(place, line) {
         object.arrivalDate = "";  //オブジェクトの納入日を空
         object.dueDate = "";  //オブジェクトの期限日を空
         object.line = "";        //オブジェクトのライン名を空
-        //screenUpdateVarnishStock();             //画面更新
       } else {
         alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
       }
@@ -532,14 +485,6 @@ function use(place, line) {
     alertP7();  //触媒入れ忘れポカヨケ
   }
 }
-
-//使用ボタン//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// const useButton = document.getElementById("button2");
-// useButton.addEventListener("click", function () {  //ボタンがクリックされたとき動作
-//   const place = document.getElementById("myForm").elements.place.value; // フォームから場所を取得
-//   const line = "Line"; //フォーム追加後に変更
-//   use(place, line);  //使用処理 use 関数を呼び出す
-// });
 
 //使用ボタン4//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const useButton4 = document.getElementById("button4");
@@ -592,7 +537,6 @@ function useHighVis(place, line) {
           object.arrivalDate = "";  //オブジェクトの納入日を空
           object.dueDate = "";  //オブジェクトの期限日を空
           object.line = "";        //オブジェクトのライン名を空
-          //screenUpdateVarnishStock();             //画面更新
         } else {
           alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
         }
@@ -611,7 +555,6 @@ function useHighVis(place, line) {
           object.arrivalDate = "";  //オブジェクトの納入日を空
           object.dueDate = "";  //オブジェクトの期限日を空
           object.line = "";        //オブジェクトのライン名を空
-          //screenUpdateVarnishStock();             //画面更新
         } else {
           alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
         }
@@ -838,31 +781,6 @@ function inputCsvData(csvData) {
   }
 }
 
-
-//入庫処理ハンディー用(入力フォームver)/////////////////////////////////////////////////////////////////////////////////////////////////////////
-// let textForm = document.getElementById("inputdata");
-// textForm.addEventListener("keypress", inputData);
-
-// //入力処理　１：入庫　　２：ワニス出庫　　３：高粘度ワニス出庫
-// function inputData(e) {
-//   if (e.keyCode === 13) {   //returnキーだったら
-//     if (textForm.value !== "1" && textForm.value !== "2" && textForm.value !== "3") {  //入力値が1以外なら
-//       inputtext.push(textForm.value);  //値を格納
-//       textForm.value = "";    //フォームをリセット
-//     } else if (textForm.value === "1") {  //入力値が1の時
-//       textForm.value = "";    //フォームをリセット
-//       warehousing();    //入力データ入庫処理関数実行
-//     } else if (textForm.value === "2") {  //入力値が2の時
-//       textForm.value = "";    //フォームをリセット
-//       issueVanish();    //入力データ出庫処理関数実行
-//     } else if (textForm.value === "3") {  //入力値が2の時
-//       textForm.value = "";    //フォームをリセット
-//       issueHighVisVanish();    //入力データ出庫処理関数実行
-//     }
-//     return false;  //Enterキーによるデフォルトのブラウザ動作(フォームを送信せずにページをリロードしないようにする)を防ぐ
-//   }
-// }
-
 //入力データ入庫処理 （ライン名・高粘度ワニスは使用期限)//////////////////////////////////////////////////////////////////////////////////////////
 function warehousing() {
   const lineA = "PT253";   //組コードが変わったらここを変更する
@@ -1030,13 +948,12 @@ if (jsonLoadData) {
 
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
-  console.log(data);
 
 } else {
   // ローカルストレージにデータが存在しない場合の処理
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
-  console.log('No data found in local storage.');
+  alert('No data found in local storage.');
 }
 
 //JSONファイルからデータ復元/////////////////////////////////////////////////////
@@ -1077,14 +994,13 @@ function loadData() {
 
         updateStockInfoVarnish(); //ワニス在庫表示更新
         updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
-        console.log(loadedData);
+        alert("データ復元完了");
 
       } catch (error) {
         // パースエラーが発生した場合の処理
-        console.error('データの復元中にエラーが発生しました:', error);
+        alert('データの復元中にエラーが発生しました:', error);
       }
     };
-
     // ファイルをテキストとして読み込む
     reader.readAsText(file);
     // ファイル名を表示する
