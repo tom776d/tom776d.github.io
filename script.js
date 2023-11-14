@@ -421,7 +421,11 @@ button7.addEventListener("click", function () {  //ボタンがクリックさ�
   const line = "P710"; //
   const inputDueDate = new Date(document.getElementById("dueDate").value);
 
-  arrivalHighViscosityVanish(place, getDate, inputDueDate, line);  //入庫処理 arrival 関数を呼び出す
+  if (!(Number.isNaN(inputDueDate.getTime()))) {   //期限日が入力されたとき＝inputDueDateがInvalid Dateではないとき
+    arrivalHighViscosityVanish(place, getDate, inputDueDate, line);  //入庫処理 arrival 関数を呼び出す
+  } else {
+    alert("期限日が入力されておりません");
+  }
 });
 
 //高粘度ワニス入庫ボタン9//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -433,7 +437,11 @@ button9.addEventListener("click", function () {  //ボタンがクリックさ�
   const line = "P810"; //
   const inputDueDate = new Date(document.getElementById("dueDate").value);
 
-  arrivalHighViscosityVanish(place, getDate, inputDueDate, line);  //入庫処理 arrival 関数を呼び出す
+  if (!(Number.isNaN(inputDueDate.getTime()))) {   //期限日が入力されたとき＝inputDueDateがInvalid Dateではないとき
+    arrivalHighViscosityVanish(place, getDate, inputDueDate, line);  //入庫処理 arrival 関数を呼び出す
+  } else {
+    alert("期限日が入力されておりません");
+  }
 });
 
 //触媒入庫ボタン11//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -988,13 +996,14 @@ function saveData() {
   };
 
   const jsonSaveData = JSON.stringify(data);
-
   // ローカルストレージに保存
   localStorage.setItem('myData', jsonSaveData);
+  //サーバーへデータ送信
   socket.send(jsonSaveData);
 }
-//loaddata////////////////////////////////////////////////////////////////////////////////////
-// ローカルストレージからデータを取得
+
+//loaddata///////////////////////////////////////////////////////////////////////////////////////////////////////
+// ローカルストレージからデータを取得///////////////////////////////////////////////
 const jsonLoadData = localStorage.getItem('myData');
 
 if (jsonLoadData) {
@@ -1021,12 +1030,8 @@ if (jsonLoadData) {
 
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
- // inVarnishPlaceNumber();//ワニス優先表示更新
-
-
   console.log(data);
 
-  // ここで data オブジェクトを使用して必要な処理を実行できます
 } else {
   // ローカルストレージにデータが存在しない場合の処理
   updateStockInfoVarnish(); //ワニス在庫表示更新
@@ -1034,11 +1039,65 @@ if (jsonLoadData) {
   console.log('No data found in local storage.');
 }
 
+//JSONファイルからデータ復元/////////////////////////////////////////////////////
+const button16 = document.getElementById("button16");
+button16.addEventListener("click", loadData)   //ボタンがクリックされたとき動作
+
+function loadData() {
+  const fileInput = document.getElementById('fileInput');
+  // ファイルが選択されているか確認
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    // ファイルの読み込みが完了したときの処理
+    reader.onload = function (event) {
+      const jsonSavedData = event.target.result;
+
+      try {
+        // JSONデータをJavaScriptオブジェクトにパース
+        const loadedData = JSON.parse(jsonSavedData);
+        // 各変数にデータを代入
+        varnishStock = loadedData.varnishStock;
+        highViscosityVarnishStockP710 = loadedData.highViscosityVarnishStockP710;
+        highViscosityVarnishStockP810 = loadedData.highViscosityVarnishStockP810;
+        catalystStockDateP710 = loadedData.catalystStockDateP710;
+        catalystStockDueDateP710 = loadedData.catalystStockDueDateP710;
+        inventoryCountP710 = loadedData.inventoryCountP710;
+        catalystStockDateP810 = loadedData.catalystStockDateP810;
+        catalystStockDueDateP810 = loadedData.catalystStockDueDateP810;
+        inventoryCountP810 = loadedData.inventoryCountP810;
+        priorityPlaceVarnishElement = loadedData.priorityPlaceVarnishElement;
+        priorityPlaceHighVisVarnishElementP710 = loadedData.priorityPlaceHighVisVarnishElementP710;
+        priorityPlaceHighVisVarnishElementP810 = loadedData.priorityPlaceHighVisVarnishElementP810;
+        firstVarnishElementP710 = loadedData.firstVarnishElementP710;
+        firstVarnishElementP810 = loadedData.firstVarnishElementP810;
+        firstHighVisVarnishElementP710 = loadedData.firstHighVisVarnishElementP710;
+        firstHighVisVarnishElementP810 = loadedData.firstHighVisVarnishElementP810;
+
+        updateStockInfoVarnish(); //ワニス在庫表示更新
+        updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+        console.log(loadedData);
+
+      } catch (error) {
+        // パースエラーが発生した場合の処理
+        console.error('データの復元中にエラーが発生しました:', error);
+      }
+    };
+
+    // ファイルをテキストとして読み込む
+    reader.readAsText(file);
+    // ファイル名を表示する
+  } else {
+    alert('ファイルが選択されていません。');
+  }
+}
+
 //localdataをclear//////////////////////////////////////////////////////////////////////////////
 const button15 = document.getElementById("button15");
 button15.addEventListener("click", saveDataClear)   //ボタンがクリックされたとき動作
 
-function saveDataClear(){
+function saveDataClear() {
   localStorage.clear();  //ローカルストレージの保存データクリア
   location.reload();    //ページリロード
 }
@@ -1047,7 +1106,7 @@ function saveDataClear(){
 function toggleAllVisibility() {
   var elements = document.querySelectorAll('.selecteditem');
 
-  elements.forEach(function(element) {
+  elements.forEach(function (element) {
     element.style.display = (element.style.display === 'none' || element.style.display === '') ? 'block' : 'none';
   });
 }
