@@ -734,12 +734,15 @@ socket.onopen = () => {
 socket.onmessage = (event) => {
   console.log("イベント発生");
   // Pythonサーバーからデータを受信したときの処理
-  const data = event.data;
+  let data = event.data;
   console.log('受信したデータ:', data);
-  csvData = data.split("\n");
-  csvData.pop(); //改行の\nを除外
-  let csvString = csvData.join(",");  //一旦カンマ区切りの文字列へ戻す
-  csvData = csvString.split(",");  //カンマ区切りで配列へ格納
+  data = data.slice(1);
+  console.log(data);
+  csvData = data.split(",");
+  // csvData.pop(); //改行の\nを除外
+  // let csvString = csvData.join(",");  //一旦カンマ区切りの文字列へ戻す
+  // csvData = csvString.split(",");  //カンマ区切りで配列へ格納
+  console.log(csvData);
   inputCsvData(csvData);
 };
 
