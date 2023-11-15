@@ -736,20 +736,22 @@ socket.onmessage = (event) => {
   // Pythonサーバーからデータを受信したときの処理
   let data = event.data;
   console.log('受信したデータ:', data);
-  if(data.startsWith(",")){
-    data = data.slice(1);
-    console.log(data);
-  }
-  else{
-    //年月日情報をyyyy/mm/dd形式に変更
-    let strA = data.slice(0,4);
-    let strB = data.slice(4,6);
-    let strC = data.slice(6);
-    data = strA + "/" + strB + "/" + strC;
-  }
+  if(data.length <= 20){
+    if(data.startsWith(",")){
+      data = data.slice(1);
+      console.log(data);
+    }
+    else{
+      //年月日情報をyyyy/mm/dd形式に変更
+      let strA = data.slice(0,4);
+      let strB = data.slice(4,6);
+      let strC = data.slice(6);
+      data = strA + "/" + strB + "/" + strC;
+    }
   csvData = data.split(",");
   console.log(csvData);
   inputCsvData(csvData);
+  }  
 };
 
 socket.onclose = () => {
