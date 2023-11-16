@@ -731,27 +731,40 @@ socket.onopen = () => {
   connectionConfirmation.innerText = indication;
 };
 
+let isProcessing = false;
+
 socket.onmessage = (event) => {
-  console.log("イベント発生");
-  // Pythonサーバーからデータを受信したときの処理
-  let data = event.data;
-  console.log('受信したデータ:', data);
-  if(data.length <= 20){
-    if(data.startsWith(",")){
-      data = data.slice(1);
-      console.log(data);
-    }
-    else{
+  if(!isProcessing){
+    isProcessing = true;
+
+    console.log("イベント発生");
+    // Pythonサーバーからデータを受信したときの処理
+    let data = event.data;
+    console.log('受信したデータ:', data);
+    if(data.length <= 20){  //json保存データが処理される対策
+      if(data.startsWith(",")){  //ワニスは先頭に日付がないので , を抜く
+        data = data.slice(1);
+        console.log(data);
+      }
+      else{
       //年月日情報をyyyy/mm/dd形式に変更
-      let strA = data.slice(0,4);
-      let strB = data.slice(4,6);
-      let strC = data.slice(6);
-      data = strA + "/" + strB + "/" + strC;
+        let strA = data.slice(0,4);
+        let strB = data.slice(4,6);
+        let strC = data.slice(6);
+        data = strA + "/" + strB + "/" + strC;
+      }
+      csvData = data.split(",");
+      console.log(csvData);
+      inputCsvData(csvData);
     }
-  csvData = data.split(",");
-  console.log(csvData);
-  inputCsvData(csvData);
-  }  
+
+    setTimeout(() => {  //２重処理無効のため
+      isProcessing = false;
+    }, 1000);  //1秒後に処理を有効化
+
+  } else {
+    console.log("処理中...");
+  }
 };
 
 socket.onclose = () => {
