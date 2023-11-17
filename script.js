@@ -58,7 +58,9 @@ function arrivalCatlystP710(getday) {
     const dueDate = new Date(parsedDay);  //duedateに納入日を日付型で格納
     dueDate.setDate(parsedDay.getDate() + 30);  // 30日後の日付を計算
     catalystStockDueDateP710.push(dueDate);  //配列に格納
+    itemInSound(); //効果音
   } else {
+    alertSound();  //警告音
     alert("在庫がいっぱいです！")
   }
   inventoryCountP710 = catalystStockDateP710.length;
@@ -71,10 +73,13 @@ function shippingCatlystP710() {
   if (catalystStockDateP710.length > 0) {
     catalystStockDateP710.shift();  //配列に格納
     catalystStockDueDateP710.shift();  //配列に格納
+    itemOutSound();  //効果音
   } else {
-    alert("在庫がありませんねん")
+    alertSound();  //警告音
+    alert("在庫がありません")
   }
   inventoryCountP710 = catalystStockDateP710.length;
+  itemOutSound();  //効果音
   updateStockInfocata();  //触媒在庫数更新
   saveData();  //データ保存
 }
@@ -87,7 +92,9 @@ function arrivalCatlystP810(getday) {
     const dueDate = new Date(parsedDay);  //duedateに納入日を日付型で格納
     dueDate.setDate(parsedDay.getDate() + 30);  // 30日後の日付を計算
     catalystStockDueDateP810.push(dueDate);  //配列に格納
+    itemInSound(); //効果音
   } else {
+    alertSound();  //警告音
     alert("在庫がいっぱいです！")
   }
   inventoryCountP810 = catalystStockDateP810.length;
@@ -101,9 +108,11 @@ function shippingCatlystP810() {
     catalystStockDateP810.shift();  //配列に格納
     catalystStockDueDateP810.shift();  //配列に格納
   } else {
+    alertSound();  //警告音
     alert("在庫がありませんねん")
   }
   inventoryCountP810 = catalystStockDateP810.length;
+  itemOutSound();  //効果音
   updateStockInfocata();  //触媒在庫数更新
   saveData();  //データ保存
 }
@@ -138,6 +147,7 @@ function varnishStockCount() {
 function alertP7() {
   window.setTimeout(function () {
     if (varnishStockCountP7 !== inventoryCountP710) {
+      alermSound();
       window.open("AlermP7.html", null, 'width=740,height=460,toolbar=no,menubar=no,scrollbars=no');
     }
   }, 5000);
@@ -146,6 +156,7 @@ function alertP7() {
 function alertP8() {
   window.setTimeout(function () {
     if (varnishStockCountP8 !== inventoryCountP810) {
+      alermSound();
       window.open("AlermP8.html", null, 'width=740,height=460,toolbar=no,menubar=no,scrollbars=no');
     }
   }, 5000);
@@ -334,7 +345,9 @@ function arrivalVanish(place, getDate, line) {
         dueDate.setDate(parsedDate.getDate() + 30);  // 30日後の日付を計算
         object.dueDate = dueDate;  //オブジェクトの期限日を格納
         object.line = line;        //オブジェクトのライン名を格納
+        itemInSound(); //効果音
       } else {
+        alertSound();  //警告音
         alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
       }
     }
@@ -380,6 +393,7 @@ button7.addEventListener("click", function () {  //ボタンがクリックさ�
   if (!(Number.isNaN(inputDueDate.getTime()))) {   //期限日が入力されたとき＝inputDueDateがInvalid Dateではないとき
     arrivalHighViscosityVanish(place, getDate, inputDueDate, line);  //入庫処理 arrival 関数を呼び出す
   } else {
+    alertSound();  //警告音
     alert("期限日が入力されておりません");
   }
 });
@@ -396,6 +410,7 @@ button9.addEventListener("click", function () {  //ボタンがクリックさ�
   if (!(Number.isNaN(inputDueDate.getTime()))) {   //期限日が入力されたとき＝inputDueDateがInvalid Dateではないとき
     arrivalHighViscosityVanish(place, getDate, inputDueDate, line);  //入庫処理 arrival 関数を呼び出す
   } else {
+    alertSound();  //警告音
     alert("期限日が入力されておりません");
   }
 });
@@ -431,7 +446,9 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
           object.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
           object.dueDate = inputDueDate;  //オブジェクトの期限日を格納
           object.line = line;        //オブジェクトのライン名を格納
+          itemInSound(); //効果音
         } else {
+          alertSound();  //警告音
           alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
         }
       }
@@ -449,7 +466,9 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
           object.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
           object.dueDate = inputDueDate;  //オブジェクトの期限日を格納
           object.line = line;        //オブジェクトのライン名を格納
+          itemInSound(); //効果音
         } else {
+          alertSound();  //警告音
           alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
         }
       }
@@ -469,7 +488,9 @@ function use(place, line) {
         object.arrivalDate = "";  //オブジェクトの納入日を空
         object.dueDate = "";  //オブジェクトの期限日を空
         object.line = "";        //オブジェクトのライン名を空
+        itemInSound(); //効果音
       } else {
+        alertSound();  //警告音
         alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
       }
     }
@@ -537,7 +558,9 @@ function useHighVis(place, line) {
           object.arrivalDate = "";  //オブジェクトの納入日を空
           object.dueDate = "";  //オブジェクトの期限日を空
           object.line = "";        //オブジェクトのライン名を空
+          itemOutSound();  //効果音
         } else {
+          alertSound();  //警告音
           alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
         }
       }
@@ -555,7 +578,9 @@ function useHighVis(place, line) {
           object.arrivalDate = "";  //オブジェクトの納入日を空
           object.dueDate = "";  //オブジェクトの期限日を空
           object.line = "";        //オブジェクトのライン名を空
+          itemOutSound();  //効果音
         } else {
+          alertSound();  //警告音
           alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
         }
       }
@@ -661,6 +686,7 @@ function enteringTheDepo() {
     }
   }
   if (changeFlag === false) {
+    alertSound();  //警告音
     alert("在庫がいっぱいだよ！")
   }
 }
@@ -687,6 +713,7 @@ function enteringTheDepoHighVisP710() {
     }
   }
   if (changeFlag === false) {
+  　alertSound();  //警告音
     alert("在庫がいっぱいだよ！")
   }
 }
@@ -713,6 +740,7 @@ function enteringTheDepoHighVisP810() {
     }
   }
   if (changeFlag === false) {
+    
     alert("在庫がいっぱいだよ！")
   }
 }
@@ -1016,12 +1044,15 @@ function loadData() {
         firstHighVisVarnishElementP710 = loadedData.firstHighVisVarnishElementP710;
         firstHighVisVarnishElementP810 = loadedData.firstHighVisVarnishElementP810;
 
+        dataLoadSound();  //効果音
         updateStockInfoVarnish(); //ワニス在庫表示更新
         updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+        updateStockInfocata();  //触媒在庫情報更新
         alert("データ復元完了");
 
       } catch (error) {
         // パースエラーが発生した場合の処理
+        alertSound(); //効果音
         alert('データの復元中にエラーが発生しました:', error);
       }
     };
@@ -1029,6 +1060,7 @@ function loadData() {
     reader.readAsText(file);
     // ファイル名を表示する
   } else {
+    alertSound(); //効果音
     alert('ファイルが選択されていません。');
   }
 }
@@ -1049,4 +1081,30 @@ function toggleAllVisibility() {
   elements.forEach(function (element) {
     element.style.display = (element.style.display === 'none' || element.style.display === '') ? 'block' : 'none';
   });
+}
+
+//効果音////////////////////////////////////////////////////////////////////////////////////////
+//警告/////
+function alermSound() {
+  document.getElementById("AlermSound").play();
+}
+
+//itemin/////
+function itemInSound() {
+  document.getElementById("itemInSound").play();
+}
+
+//itemout/////
+function itemOutSound() {
+  document.getElementById("itemOutSound").play();
+}
+
+//alert/////
+function alertSound() {
+  document.getElementById("alertSound").play();
+}
+
+//dataLoad/////
+function dataLoadSound() {
+  document.getElementById("dataLoadSound").play();
 }
