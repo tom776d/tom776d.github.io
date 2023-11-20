@@ -1086,25 +1086,31 @@ function toggleAllVisibility() {
 //効果音////////////////////////////////////////////////////////////////////////////////////////
 //警告/////
 function alermSound() {
+  document.getElementById("AlermSound").currentTime = 0;
   document.getElementById("AlermSound").play();
 }
 
 //itemin/////
 function itemInSound() {
+  document.getElementById("itemInSound").currentTime = 0;
   document.getElementById("itemInSound").play();
 }
 
 //itemout/////
 function itemOutSound() {
+  document.getElementById("itemOutSound").currentTime = 0;
   document.getElementById("itemOutSound").play();
 }
 
 //alert/////
 function alertSound() {
+  document.getElementById("alertSound").currentTime = 0;
   document.getElementById("alertSound").play();
 }
 
 //dataLoad/////
 function dataLoadSound() {
+  document.getElementById("dataLoadSound").currentTime = 0;
   document.getElementById("dataLoadSound").play();
 }
+
