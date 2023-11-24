@@ -1114,3 +1114,10 @@ function dataLoadSound() {
   document.getElementById("dataLoadSound").play();
 }
 
+// ページを自動で更新する関数///////////////////////////////////////////////////////////////////
+function autoRefresh() {
+  location.reload();
+}
+
+// ページ読み込み後、毎時autoRefreshを呼ぶ
+setInterval(autoRefresh, 3600000);
