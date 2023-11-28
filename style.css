@@ -470,3 +470,31 @@ body {
   margin-left: 62px; 
   font-size: 10px;
 }
+
+.back{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  width: 80px;
+  margin-top: 70px;
+  margin-left: -10px;
+  padding: 1em 2em;
+  border: 1px solid rgb(7, 6, 6);
+  border-radius: 8px;
+  box-shadow: 6px 6px 12px #116b46, -6px -6px 12px #ffffff;
+  background-color: rgb(22, 158, 79);
+  color: rgb(252, 249, 249);
+  font-size: 8.5px;
+}
+
+.back:hover {
+  box-shadow: inset 4px 4px 12px #7eee68, inset -4px -4px 12px #1d7906;
+}
+
+.back:active {
+  -webkit-transform: translate(0, 2px);
+  -moz-transform: translate(0, 2px);
+  transform: translate(0, 2px);
+  border-bottom: none;
+}
