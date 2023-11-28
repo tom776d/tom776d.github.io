@@ -1228,7 +1228,7 @@ let backDataFirstVarnishElementP710 = 0;
 let backDataFirstVarnishElementP810 = 0;
 let backDataFirstHighVisVarnishElementP710 = 0;
 let backDataFirstHighVisVarnishElementP810 = 0;
-let backToDataFlag = 0;  //戻れるかのフラグ。0ならOK、1ならNG
+let backToDataFlag = 1;  //戻れるかのフラグ。0ならOK、1ならNG
 
 //戻すデータの格納処理
 function backData() {  //メモリ内の同じところを参照しないようにjsonで処理
