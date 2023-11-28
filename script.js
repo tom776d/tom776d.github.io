@@ -493,7 +493,7 @@ function use(place, line) {
         object.arrivalDate = "";  //オブジェクトの納入日を空
         object.dueDate = "";  //オブジェクトの期限日を空
         object.line = "";        //オブジェクトのライン名を空
-        itemInSound(); //効果音
+        itemOutSound(); //効果音
       } else {
         alertSound();  //警告音
         alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
@@ -505,10 +505,12 @@ function use(place, line) {
   updateStockInfoVarnish();   //在庫情報更新
   varnishStockCount()  //在庫数更新
   saveData();  //データ保存
+  
+  //触媒入れ忘れ防止ポカヨケ
   if (line === "P810") {
-    alertP8();  //触媒入れ忘れポカヨケ
+    buttonBTimer = setTimeout(alertP8, 3 * 60 * 1000); // 3分をミリ秒に変換
   } else {
-    alertP7();  //触媒入れ忘れポカヨケ
+    buttonATimer = setTimeout(alertP7, 3 * 60 * 1000); // 3分をミリ秒に変換
   }
 }
 
