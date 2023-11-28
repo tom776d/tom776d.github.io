@@ -53,6 +53,7 @@ let inventoryCountP810 = 0;    //在庫数
 //触媒入庫P710///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalCatlystP710(getday) {
   if (catalystStockDateP710.length < 16) {  //MAX在庫数15
+    backData();  //１つ前のデータを保存
     const parsedDay = new Date(getday);  //日付型に変更
     catalystStockDateP710.push(parsedDay);  //配列に格納
     const dueDate = new Date(parsedDay);  //duedateに納入日を日付型で格納
@@ -71,6 +72,7 @@ function arrivalCatlystP710(getday) {
 //触媒出庫P710///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function shippingCatlystP710() {
   if (catalystStockDateP710.length > 0) {
+    backData();  //１つ前のデータを保存
     catalystStockDateP710.shift();  //配列に格納
     catalystStockDueDateP710.shift();  //配列に格納
     itemOutSound();  //効果音
@@ -82,11 +84,13 @@ function shippingCatlystP710() {
   itemOutSound();  //効果音
   updateStockInfocata();  //触媒在庫数更新
   saveData();  //データ保存
+  clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
 }
 
 //触媒入庫P810///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalCatlystP810(getday) {
   if (catalystStockDateP810.length < 16) {  //MAX在庫数15
+    backData();  //１つ前のデータを保存
     const parsedDay = new Date(getday);  //日付型に変更
     catalystStockDateP810.push(parsedDay);  //配列に格納
     const dueDate = new Date(parsedDay);  //duedateに納入日を日付型で格納
@@ -105,6 +109,7 @@ function arrivalCatlystP810(getday) {
 //触媒出庫P810///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function shippingCatlystP810() {
   if (catalystStockDateP810.length > 0) {
+    backData();  //１つ前のデータを保存
     catalystStockDateP810.shift();  //配列に格納
     catalystStockDueDateP810.shift();  //配列に格納
   } else {
@@ -115,6 +120,7 @@ function shippingCatlystP810() {
   itemOutSound();  //効果音
   updateStockInfocata();  //触媒在庫数更新
   saveData();  //データ保存
+  clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
 }
 
 //触媒在庫情報更新//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,25 +149,21 @@ function varnishStockCount() {
   }
 }
 
-//触媒・ワニス数が同じかどうか比較。違ったら警告///////////////////////////////////////////////////////////////////////////////////////////////
+//ワニス使用後触媒使用ボタン押さなきゃ警告///////////////////////////////////////////////////////////////////////////////////////////////
+let buttonATimer;
+let buttonBTimer;
+
 function alertP7() {
-  window.setTimeout(function () {
-    if (varnishStockCountP7 !== inventoryCountP710) {
-      alermSound();
-      window.open("AlermP7.html", null, 'width=740,height=460,toolbar=no,menubar=no,scrollbars=no');
-    }
-  }, 5000);
+  alermSound();
+  window.open("AlermP7.html", null, 'width=740,height=460,toolbar=no,menubar=no,scrollbars=no');
+  clearTimeout(buttonATimer);
 }
 
 function alertP8() {
-  window.setTimeout(function () {
-    if (varnishStockCountP8 !== inventoryCountP810) {
-      alermSound();
-      window.open("AlermP8.html", null, 'width=740,height=460,toolbar=no,menubar=no,scrollbars=no');
-    }
-  }, 5000);
+  alermSound();
+  window.open("AlermP8.html", null, 'width=740,height=460,toolbar=no,menubar=no,scrollbars=no');
+  clearTimeout(buttonBTimer);
 };
-
 //ワニス番地表示/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function inVarnishPlaceNumber() {
   const firstVarnishP710 = varnishStock[firstVarnishElementP710].stockPlace;  //P7使用優先
@@ -334,6 +336,7 @@ function updateStockInfoHighVarnish() {
 
 // ワニス入庫処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalVanish(place, getDate, line) {
+  backData();  //１つ前のデータを保存
   // HTMLの<input type="date">から取得した文字列を日付型に変換
   const parsedDate = new Date(getDate);
 
@@ -435,6 +438,7 @@ button13.addEventListener("click", function () {  //ボタンがクリックさ�
 
 // 高粘度ワニス入庫処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
+  backData();  //１つ前のデータを保存
   // HTMLの<input type="date">から取得した文字列を日付型に変換
   const parsedDate = new Date(getDate);
   let array = [];
@@ -482,6 +486,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
 
 //ワニス使用処理////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function use(place, line) {
+  backData();  //１つ前のデータを保存
   for (const object of varnishStock) {  //ワニス在庫のオブジェクト配列
     if (object.stockPlace === place) {  //入力placeとオブジェクトのstockplaceが同一の時に
       if (object.arrivalDate !== "") {  //データがある時
@@ -549,6 +554,7 @@ button14.addEventListener("click", shippingCatlystP810);
 
 //高粘度ワニス使用処理////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function useHighVis(place, line) {
+  backData();  //１つ前のデータを保存
   let array = [];
   if (line === "P710") {
     array = highViscosityVarnishStockP710;
@@ -1121,3 +1127,74 @@ function autoRefresh() {
 
 // ページ読み込み後、毎時autoRefreshを呼ぶ
 setInterval(autoRefresh, 3600000);
+
+//入力間違いの時に１つ戻る処理backData////////////////////////////////////////////////////////////////////////////////////
+// 1つ戻るデータ格納用変数
+let backDataVarnishStock = {};
+let backDataHighViscosityVarnishStockP710 = {};
+let backDataHighViscosityVarnishStockP810 = {};
+let backDataCatalystStockDateP710 = [];
+let backDataCatalystStockDueDateP710 = [];
+let backDataInventoryCountP710 = 0;
+let backDataCatalystStockDateP810 = [];
+let backDataCatalystStockDueDateP810 = [];
+let backDataInventoryCountP810 = 0;
+let backDataPriorityPlaceVarnishElement = 0;
+let backDataPriorityPlaceHighVisVarnishElementP710 = 0;
+let backDataPriorityPlaceHighVisVarnishElementP810 = 0;
+let backDataFirstVarnishElementP710 = 0;
+let backDataFirstVarnishElementP810 = 0;
+let backDataFirstHighVisVarnishElementP710 = 0;
+let backDataFirstHighVisVarnishElementP810 = 0;
+
+//戻すデータの格納処理
+function backData() {
+  backDataVarnishStock = JSON.parse(JSON.stringify(varnishStock));
+  backDataHighViscosityVarnishStockP710 = JSON.parse(JSON.stringify(highViscosityVarnishStockP710));
+  backDataHighViscosityVarnishStockP810 = JSON.parse(JSON.stringify(highViscosityVarnishStockP810));
+  backDataCatalystStockDateP710 = JSON.parse(JSON.stringify(catalystStockDateP710));
+  backDataCatalystStockDueDateP710 = JSON.parse(JSON.stringify(catalystStockDueDateP710));
+  backDataInventoryCountP710 = JSON.parse(JSON.stringify(inventoryCountP710));
+  backDataCatalystStockDateP810 = JSON.parse(JSON.stringify(catalystStockDateP810));
+  backDataCatalystStockDueDateP810 = JSON.parse(JSON.stringify(catalystStockDueDateP810));
+  backDataInventoryCountP810 = JSON.parse(JSON.stringify(inventoryCountP810));
+  backDataPriorityPlaceVarnishElement = JSON.parse(JSON.stringify(priorityPlaceVarnishElement));
+  backDataPriorityPlaceHighVisVarnishElementP710 = JSON.parse(JSON.stringify(priorityPlaceHighVisVarnishElementP710));
+  backDataPriorityPlaceHighVisVarnishElementP810 = JSON.parse(JSON.stringify(priorityPlaceHighVisVarnishElementP810));
+  backDataFirstVarnishElementP710 = JSON.parse(JSON.stringify(firstVarnishElementP710));
+  backDataFirstVarnishElementP810 = JSON.parse(JSON.stringify(firstVarnishElementP810));
+  backDataFirstHighVisVarnishElementP710 = JSON.parse(JSON.stringify(firstHighVisVarnishElementP710));
+  backDataFirstHighVisVarnishElementP810 = JSON.parse(JSON.stringify(firstHighVisVarnishElementP810));
+}
+
+//backDtataに戻す
+function backToData() {
+  varnishStock = JSON.parse(JSON.stringify(backDataVarnishStock));
+  highViscosityVarnishStockP710 = JSON.parse(JSON.stringify(backDataHighViscosityVarnishStockP710));
+  highViscosityVarnishStockP810 = JSON.parse(JSON.stringify(backDataHighViscosityVarnishStockP810));
+  catalystStockDateP710 = JSON.parse(JSON.stringify(backDataCatalystStockDateP710));
+  catalystStockDueDateP710 = JSON.parse(JSON.stringify(backDataCatalystStockDueDateP710));
+  inventoryCountP710 = JSON.parse(JSON.stringify(backDataInventoryCountP710));
+  catalystStockDateP810 = JSON.parse(JSON.stringify(backDataCatalystStockDateP810));
+  catalystStockDueDateP810 = JSON.parse(JSON.stringify(backDataCatalystStockDueDateP810));
+  inventoryCountP810 = JSON.parse(JSON.stringify(backDataInventoryCountP810));
+  priorityPlaceVarnishElement = JSON.parse(JSON.stringify(backDataPriorityPlaceVarnishElement));
+  priorityPlaceHighVisVarnishElementP710 = JSON.parse(JSON.stringify(backDataPriorityPlaceHighVisVarnishElementP710));
+  priorityPlaceHighVisVarnishElementP810 = JSON.parse(JSON.stringify(backDataPriorityPlaceHighVisVarnishElementP810));
+  firstVarnishElementP710 = JSON.parse(JSON.stringify(backDataFirstVarnishElementP710));
+  firstVarnishElementP810 = JSON.parse(JSON.stringify(backDataFirstVarnishElementP810));
+  firstHighVisVarnishElementP710 = JSON.parse(JSON.stringify(backDataFirstHighVisVarnishElementP710));
+  firstHighVisVarnishElementP810 = JSON.parse(JSON.stringify(backDataFirstHighVisVarnishElementP810));
+
+  dataLoadSound()  //効果音
+  updateStockInfoVarnish(); //ワニス在庫表示更新
+  updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+  updateStockInfocata();  //触媒在庫情報更新
+  clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
+  clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
+  alert("データ戻し完了");
+}
+
+//１つ戻る処理実行
+const button17 = document.getElementById("button17");
+button17.addEventListener("click", backToData);   //ボタンがクリックされたとき動作
