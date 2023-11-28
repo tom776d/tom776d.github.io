@@ -1251,7 +1251,7 @@ function backData() {  //メモリ内の同じところを参照しないよう�
   backToDataFlag = 0;
 }
 
-//backDtataに戻す
+//backDtataからデータを戻す
 function backToData() {
   if (backToDataFlag === 0) {
     varnishStock = JSON.parse(JSON.stringify(backDataVarnishStock));
@@ -1281,7 +1281,7 @@ function backToData() {
   }
   else {
     alertSound();  //効果音
-    alert("もう後戻り出来ない！前を見るんだ('ω')ノ");
+    alert("もう後戻りなんて出来ない！前を見るんだ('ω')ノ");
   }
 }
 
