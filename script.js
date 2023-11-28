@@ -1129,6 +1129,7 @@ function autoRefresh() {
 setInterval(autoRefresh, 3600000);
 
 //入力間違いの時に１つ戻る処理backData////////////////////////////////////////////////////////////////////////////////////
+//backData////////////////////////////////////////////////////////////////////////////////////
 // 1つ戻るデータ格納用変数
 let backDataVarnishStock = {};
 let backDataHighViscosityVarnishStockP710 = {};
@@ -1146,9 +1147,10 @@ let backDataFirstVarnishElementP710 = 0;
 let backDataFirstVarnishElementP810 = 0;
 let backDataFirstHighVisVarnishElementP710 = 0;
 let backDataFirstHighVisVarnishElementP810 = 0;
+let backToDataFlag = 0;  //戻れるかのフラグ。0ならOK、1ならNG
 
 //戻すデータの格納処理
-function backData() {
+function backData() {  //メモリ内の同じところを参照しないようにjsonで処理
   backDataVarnishStock = JSON.parse(JSON.stringify(varnishStock));
   backDataHighViscosityVarnishStockP710 = JSON.parse(JSON.stringify(highViscosityVarnishStockP710));
   backDataHighViscosityVarnishStockP810 = JSON.parse(JSON.stringify(highViscosityVarnishStockP810));
@@ -1165,10 +1167,12 @@ function backData() {
   backDataFirstVarnishElementP810 = JSON.parse(JSON.stringify(firstVarnishElementP810));
   backDataFirstHighVisVarnishElementP710 = JSON.parse(JSON.stringify(firstHighVisVarnishElementP710));
   backDataFirstHighVisVarnishElementP810 = JSON.parse(JSON.stringify(firstHighVisVarnishElementP810));
+  backToDataFlag = 0;
 }
 
 //backDtataに戻す
 function backToData() {
+  if(backToDataFlag === 0){
   varnishStock = JSON.parse(JSON.stringify(backDataVarnishStock));
   highViscosityVarnishStockP710 = JSON.parse(JSON.stringify(backDataHighViscosityVarnishStockP710));
   highViscosityVarnishStockP810 = JSON.parse(JSON.stringify(backDataHighViscosityVarnishStockP810));
@@ -1185,7 +1189,7 @@ function backToData() {
   firstVarnishElementP810 = JSON.parse(JSON.stringify(backDataFirstVarnishElementP810));
   firstHighVisVarnishElementP710 = JSON.parse(JSON.stringify(backDataFirstHighVisVarnishElementP710));
   firstHighVisVarnishElementP810 = JSON.parse(JSON.stringify(backDataFirstHighVisVarnishElementP810));
-
+  backToDataFlag = 1;
   dataLoadSound()  //効果音
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
@@ -1193,8 +1197,94 @@ function backToData() {
   clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
   clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
   alert("データ戻し完了");
+  }
+  else{
+    alertSound();  //効果音
+    alert("もう後戻り出来ない！前を見るんだ('ω')ノ");
+  }
 }
 
 //１つ戻る処理実行
 const button17 = document.getElementById("button17");
 button17.addEventListener("click", backToData);   //ボタンがクリックされたとき動作
+
+//backData////////////////////////////////////////////////////////////////////////////////////
+// 1つ戻るデータ格納用変数
+let backDataVarnishStock = {};
+let backDataHighViscosityVarnishStockP710 = {};
+let backDataHighViscosityVarnishStockP810 = {};
+let backDataCatalystStockDateP710 = [];
+let backDataCatalystStockDueDateP710 = [];
+let backDataInventoryCountP710 = 0;
+let backDataCatalystStockDateP810 = [];
+let backDataCatalystStockDueDateP810 = [];
+let backDataInventoryCountP810 = 0;
+let backDataPriorityPlaceVarnishElement = 0;
+let backDataPriorityPlaceHighVisVarnishElementP710 = 0;
+let backDataPriorityPlaceHighVisVarnishElementP810 = 0;
+let backDataFirstVarnishElementP710 = 0;
+let backDataFirstVarnishElementP810 = 0;
+let backDataFirstHighVisVarnishElementP710 = 0;
+let backDataFirstHighVisVarnishElementP810 = 0;
+let backToDataFlag = 0;  //戻れるかのフラグ。0ならOK、1ならNG
+
+//戻すデータの格納処理
+function backData() {  //メモリ内の同じところを参照しないようにjsonで処理
+  backDataVarnishStock = JSON.parse(JSON.stringify(varnishStock));
+  backDataHighViscosityVarnishStockP710 = JSON.parse(JSON.stringify(highViscosityVarnishStockP710));
+  backDataHighViscosityVarnishStockP810 = JSON.parse(JSON.stringify(highViscosityVarnishStockP810));
+  backDataCatalystStockDateP710 = JSON.parse(JSON.stringify(catalystStockDateP710));
+  backDataCatalystStockDueDateP710 = JSON.parse(JSON.stringify(catalystStockDueDateP710));
+  backDataInventoryCountP710 = JSON.parse(JSON.stringify(inventoryCountP710));
+  backDataCatalystStockDateP810 = JSON.parse(JSON.stringify(catalystStockDateP810));
+  backDataCatalystStockDueDateP810 = JSON.parse(JSON.stringify(catalystStockDueDateP810));
+  backDataInventoryCountP810 = JSON.parse(JSON.stringify(inventoryCountP810));
+  backDataPriorityPlaceVarnishElement = JSON.parse(JSON.stringify(priorityPlaceVarnishElement));
+  backDataPriorityPlaceHighVisVarnishElementP710 = JSON.parse(JSON.stringify(priorityPlaceHighVisVarnishElementP710));
+  backDataPriorityPlaceHighVisVarnishElementP810 = JSON.parse(JSON.stringify(priorityPlaceHighVisVarnishElementP810));
+  backDataFirstVarnishElementP710 = JSON.parse(JSON.stringify(firstVarnishElementP710));
+  backDataFirstVarnishElementP810 = JSON.parse(JSON.stringify(firstVarnishElementP810));
+  backDataFirstHighVisVarnishElementP710 = JSON.parse(JSON.stringify(firstHighVisVarnishElementP710));
+  backDataFirstHighVisVarnishElementP810 = JSON.parse(JSON.stringify(firstHighVisVarnishElementP810));
+  backToDataFlag = 0;
+}
+
+//backDtataに戻す
+function backToData() {
+  if(backToDataFlag === 0){
+  varnishStock = JSON.parse(JSON.stringify(backDataVarnishStock));
+  highViscosityVarnishStockP710 = JSON.parse(JSON.stringify(backDataHighViscosityVarnishStockP710));
+  highViscosityVarnishStockP810 = JSON.parse(JSON.stringify(backDataHighViscosityVarnishStockP810));
+  catalystStockDateP710 = JSON.parse(JSON.stringify(backDataCatalystStockDateP710));
+  catalystStockDueDateP710 = JSON.parse(JSON.stringify(backDataCatalystStockDueDateP710));
+  inventoryCountP710 = JSON.parse(JSON.stringify(backDataInventoryCountP710));
+  catalystStockDateP810 = JSON.parse(JSON.stringify(backDataCatalystStockDateP810));
+  catalystStockDueDateP810 = JSON.parse(JSON.stringify(backDataCatalystStockDueDateP810));
+  inventoryCountP810 = JSON.parse(JSON.stringify(backDataInventoryCountP810));
+  priorityPlaceVarnishElement = JSON.parse(JSON.stringify(backDataPriorityPlaceVarnishElement));
+  priorityPlaceHighVisVarnishElementP710 = JSON.parse(JSON.stringify(backDataPriorityPlaceHighVisVarnishElementP710));
+  priorityPlaceHighVisVarnishElementP810 = JSON.parse(JSON.stringify(backDataPriorityPlaceHighVisVarnishElementP810));
+  firstVarnishElementP710 = JSON.parse(JSON.stringify(backDataFirstVarnishElementP710));
+  firstVarnishElementP810 = JSON.parse(JSON.stringify(backDataFirstVarnishElementP810));
+  firstHighVisVarnishElementP710 = JSON.parse(JSON.stringify(backDataFirstHighVisVarnishElementP710));
+  firstHighVisVarnishElementP810 = JSON.parse(JSON.stringify(backDataFirstHighVisVarnishElementP810));
+  backToDataFlag = 1;
+  dataLoadSound()  //効果音
+  updateStockInfoVarnish(); //ワニス在庫表示更新
+  updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+  updateStockInfocata();  //触媒在庫情報更新
+  clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
+  clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
+  alert("データ戻し完了");
+  }
+  else{
+    alertSound();  //効果音
+    alert("もう後戻り出来ない！前を見るんだ('ω')ノ");
+  }
+}
+
+//１つ戻る処理実行
+const button17 = document.getElementById("button17");
+button17.addEventListener("click", backToData);   //ボタンがクリックされたとき動作
+
+
