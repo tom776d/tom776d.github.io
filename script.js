@@ -1290,3 +1290,81 @@ const button17 = document.getElementById("button17");
 button17.addEventListener("click", backToData);   //ボタンがクリックされたとき動作
 
 
+//期限日が近づいたら背景色を変化///////////////////////////////////////////////////////////////////////////////////
+// ページロード時と日付変更時の処理をまとめた関数
+function updateVarnishColors() {
+  // 入力された日付を取得
+  let inputDate = new Date(document.getElementById('stockDate').value);
+
+  // varnishStockの各オブジェクトに対して処理
+  for (let i = 0; i < varnishStock.length; i++) {
+    // 比較する dueDate を取得
+    let dueDate = new Date(varnishStock[i].dueDate);
+
+    // 日付の差を計算（ミリ秒単位）
+    let dateDifference = dueDate - inputDate;
+
+    // ミリ秒を日に変換
+    let daysDifference = dateDifference / (1000 * 60 * 60 * 24);
+
+    // 背景色を変更
+    let varnishId = 'varnishDueDate' + varnishStock[i].stockPlace;
+    let varnishElement = document.getElementById(varnishId);
+
+    if (daysDifference >= -100 && daysDifference <= 5) {
+      varnishElement.classList.add('date-difference-alert');
+    } else {
+      varnishElement.classList.remove('date-difference-alert');
+    }
+  }
+  //高粘度ワニスP710の処理
+  for (let i = 0; i < highViscosityVarnishStockP710.length; i++) {
+    // 比較する dueDate を取得
+    let dueDateP710 = new Date(highViscosityVarnishStockP710[i].dueDate);
+
+    // 日付の差を計算（ミリ秒単位）
+    let dateDifferenceP710 = dueDateP710 - inputDate;
+
+    // ミリ秒を日に変換
+    let daysDifferenceP710 = dateDifferenceP710 / (1000 * 60 * 60 * 24);
+
+    // 背景色を変更
+    let highVarnishIdP710 = 'highVarnishDueDate' + highViscosityVarnishStockP710[i].stockPlace;
+    let highVarnishElementP710 = document.getElementById(highVarnishIdP710);
+
+    if (daysDifferenceP710 >= -100 && daysDifferenceP710 <= 5) {
+      highVarnishElementP710.classList.add('date-difference-alert');
+    } else {
+      highVarnishElementP710.classList.remove('date-difference-alert');
+    }
+  }
+  //高粘度ワニスP810の処理
+  for (let i = 0; i < highViscosityVarnishStockP810.length; i++) {
+    // 比較する dueDate を取得
+    let dueDateP810 = new Date(highViscosityVarnishStockP810[i].dueDate);
+
+    // 日付の差を計算（ミリ秒単位）
+    let dateDifferenceP810 = dueDateP810 - inputDate;
+
+    // ミリ秒を日に変換
+    let daysDifferenceP810 = dateDifferenceP810 / (1000 * 60 * 60 * 24);
+
+    // 背景色を変更
+    let highVarnishIdP810 = 'highVarnishDueDate' + highViscosityVarnishStockP810[i].stockPlace;
+    let highVarnishElementP810 = document.getElementById(highVarnishIdP810);
+
+    if (daysDifferenceP810 >= -100 && daysDifferenceP810 <= 5) {
+      highVarnishElementP810.classList.add('date-difference-alert');
+    } else {
+      highVarnishElementP810.classList.remove('date-difference-alert');
+    }
+  }
+
+}
+
+// ページロード時に初期化
+window.addEventListener('load', updateVarnishColors);
+
+// Date input change event
+document.getElementById('stockDate').addEventListener('change', updateVarnishColors);
+
