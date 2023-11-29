@@ -498,3 +498,8 @@ body {
   transform: translate(0, 2px);
   border-bottom: none;
 }
+
+.date-difference-alert {
+  background-color: red;
+  width: 85px;
+}
