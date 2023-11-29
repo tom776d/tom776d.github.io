@@ -508,9 +508,9 @@ function use(place, line) {
   
   //触媒入れ忘れ防止ポカヨケ
   if (line === "P810") {
-    buttonBTimer = setTimeout(alertP8, 3 * 60 * 1000); // 3分をミリ秒に変換
+    buttonBTimer = setTimeout(alertP8, 0.5 * 60 * 1000); // 0.5分をミリ秒に変換
   } else {
-    buttonATimer = setTimeout(alertP7, 3 * 60 * 1000); // 3分をミリ秒に変換
+    buttonATimer = setTimeout(alertP7, 0.5 * 60 * 1000); // 0.5分をミリ秒に変換
   }
 }
 
