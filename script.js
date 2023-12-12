@@ -1288,3 +1288,37 @@ window.addEventListener('load', updateVarnishColors);
 // Date input change event
 document.getElementById('stockDate').addEventListener('change', updateVarnishColors);
 
+//選択してデータを消去/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function eraseData() {
+  let selectedNum = Number(selectPlace.value);  //HTMLで選択されたvalueをnumber型へ変更し格納
+
+  if (0 <= selectedNum && selectedNum <= 11) {
+    varnishStock[selectedNum].arrivalDate = "";
+    varnishStock[selectedNum].dueDate = "";
+    varnishStock[selectedNum].line = "";
+  }
+  else if (12 <= selectedNum && selectedNum <= 15) {
+    highViscosityVarnishStockP710[selectedNum - 12].arrivalDate = "";
+    highViscosityVarnishStockP710[selectedNum - 12].dueDate = "";
+    highViscosityVarnishStockP710[selectedNum - 12].line = "";
+  }
+  else if (16 <= selectedNum && selectedNum <= 19) {
+    highViscosityVarnishStockP810[selectedNum - 16].arrivalDate = "";
+    highViscosityVarnishStockP810[selectedNum - 16].dueDate = "";
+    highViscosityVarnishStockP810[selectedNum - 16].line = "";
+  }
+
+  enteringTheDepo();  //ワニス入庫優先更新
+  enteringTheDepoHighVisP710();  //P710高粘度ワニス入庫優先更新
+  enteringTheDepoHighVisP810();  //P810高粘度ワニス入庫優先更新
+  updateStockInfoVarnish(); //ワニス在庫表示更新
+  updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+  updateStockInfocata();  //触媒在庫情報更新
+  clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
+  clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
+}
+
+let selectPlace = document.getElementById('selectPlace');  //選択された消去したい場所
+
+let elaseButton = document.getElementById('button18');
+elaseButton.addEventListener('click', eraseData);         //ボタン18クリックでelaseData関数が呼び出される
