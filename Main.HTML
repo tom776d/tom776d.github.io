@@ -184,6 +184,23 @@
     <div class="selecteditem">
       <button type="submit" id="button10" class="highVarnishOutP8">P8<BR>高粘度出庫</button>
     </div>
+    <div class="selecteditem"></div>
+    <div class="selecteditem"></div>
+    <div class="selecteditem"></div>
+    <div class="selecteditem"></div>
+    <div class="selecteditem"></div>
+    <div class="selecteditem">
+      <p class="title2">高粘度ワニス期限日</p>
+    </div>
+    <div class="selecteditem">
+      <input type="date" id="dueDate" class="inputDueDate"></input>
+    </div>
+    <div class="selecteditem"></div>
+    <label class="toggle-switch">
+      <span class="title">ボタン表示</span>
+      <input type="checkbox" id="toggleButton" onclick="toggleAllVisibility()">
+      <span class="slider"></span>
+    </label>
     <div class="item">
       <button type="submit" id="button15" class="clear">全リセット</button>
     </div>
@@ -196,18 +213,35 @@
     <div class="item">
       <button type="submit" id="button17" class="back">1つ戻る</button>
     </div>
-    <label class="toggle-switch">
-      <span class="title">ボタン表示</span>
-      <input type="checkbox" id="toggleButton" onclick="toggleAllVisibility()">
-      <span class="slider"></span>
-    </label>
     <div class="selecteditem">
-      <p class="title">高粘度ワニス期限日</p>
+      <p class="title3">選択データを消去</p>
     </div>
+    <select id="selectPlace" class="selecteditem">
+      <option value="none">選択してください</option>
+      <option value="0">ワニスA1</option>
+      <option value="1">ワニスA2</option>
+      <option value="2">ワニスA3</option>
+      <option value="3">ワニスA4</option>
+      <option value="4">ワニスB1</option>
+      <option value="5">ワニスB2</option>
+      <option value="6">ワニスB3</option>
+      <option value="7">ワニスB4</option>
+      <option value="8">ワニスC1</option>
+      <option value="9">ワニスC2</option>
+      <option value="10">ワニスC3</option>
+      <option value="11">ワニスC4</option>
+      <option value="12">高粘度A1</option>
+      <option value="13">高粘度A2</option>
+      <option value="14">高粘度A3</option>
+      <option value="15">高粘度A4</option>
+      <option value="16">高粘度B1</option>
+      <option value="17">高粘度B2</option>
+      <option value="18">高粘度B3</option>
+      <option value="19">高粘度B4</option>
+    </select>
     <div class="selecteditem">
-      <input type="date" id="dueDate" class="inputDueDate"></input>
+      <input type="button" value="消去" id="button18" class="elase">
     </div>
-    <div class="item"></div>
   </div>
   <script type="text/javascript" src="script/script.js"></script>
   <audio id="AlermSound" preload="auto">
@@ -231,5 +265,3 @@
 </body>
 
 </html>
-
-
