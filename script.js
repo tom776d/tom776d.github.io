@@ -360,6 +360,7 @@ function arrivalVanish(place, getDate, line) {
   updateStockInfoVarnish();   //在庫情報更新
   varnishStockCount();  //在庫数更新
   saveData();  //データ保存
+  flickeringColor(place,"varnishDueDate");  //文字背景点滅処理
 }
 
 //ワニス入庫ボタン3//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -461,6 +462,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
     enteringTheDepoHighVisP810();   //入庫優先処理
     updateStockInfoHighVarnish();   //在庫情報画面更新
     saveData();  //データ保存
+    flickeringColor(place,"highVarnishDueDate");  //文字背景点滅処理
   }
   else {
     array = highViscosityVarnishStockP710;
@@ -481,6 +483,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
     enteringTheDepoHighVisP710();   //入庫優先処理
     updateStockInfoHighVarnish();    //在庫情報画面更新
     saveData();  //データ保存
+    flickeringColor(place,"highVarnishDueDate");  //文字背景点滅処理
   }
 }
 
@@ -1296,21 +1299,24 @@ function eraseData() {
     varnishStock[selectedNum].arrivalDate = "";
     varnishStock[selectedNum].dueDate = "";
     varnishStock[selectedNum].line = "";
+    enteringTheDepo();  //ワニス入庫優先更新
+    stockSort();  //ワニス使用優先更新
   }
   else if (12 <= selectedNum && selectedNum <= 15) {
     highViscosityVarnishStockP710[selectedNum - 12].arrivalDate = "";
     highViscosityVarnishStockP710[selectedNum - 12].dueDate = "";
     highViscosityVarnishStockP710[selectedNum - 12].line = "";
+    enteringTheDepoHighVisP710();  //P710高粘度ワニス入庫優先更新
+    stockSortHighVisP710(); //P710高粘度ワニス使用優先更新
   }
   else if (16 <= selectedNum && selectedNum <= 19) {
     highViscosityVarnishStockP810[selectedNum - 16].arrivalDate = "";
     highViscosityVarnishStockP810[selectedNum - 16].dueDate = "";
     highViscosityVarnishStockP810[selectedNum - 16].line = "";
+    enteringTheDepoHighVisP810();  //P810高粘度ワニス入庫優先更新
+    stockSortHighVisP810(); //P810高粘度ワニス使用優先更新
   }
 
-  enteringTheDepo();  //ワニス入庫優先更新
-  enteringTheDepoHighVisP710();  //P710高粘度ワニス入庫優先更新
-  enteringTheDepoHighVisP810();  //P810高粘度ワニス入庫優先更新
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
   updateStockInfocata();  //触媒在庫情報更新
@@ -1322,3 +1328,30 @@ let selectPlace = document.getElementById('selectPlace');  //選択された消�
 
 let elaseButton = document.getElementById('button18');
 elaseButton.addEventListener('click', eraseData);         //ボタン18クリックでelaseData関数が呼び出される
+
+
+//文字背景の点滅処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function flickeringColor(place,type) {
+ 
+  let varnishDueDate = document.getElementById(`${type}${place}`);
+  console.log(varnishDueDate);
+  console.log(`${type}${place}`);
+  // 文字背景を緑色にする関数
+  function toggleBackgroundColor() {
+    if (varnishDueDate.style.backgroundColor === 'blue') {
+      varnishDueDate.style.backgroundColor = '';
+      varnishDueDate.style.color = 'black'; // 文字色を元に戻す
+    } else {
+      varnishDueDate.style.backgroundColor = 'blue';
+      varnishDueDate.style.color = 'white'; // 背景が緑の場合に文字色を白に変更
+    }
+  }
+  //点滅表示
+  let intervalId = setInterval(toggleBackgroundColor, 500); // 0.5秒ごとに実行
+  // 60秒後に点滅を停止
+  setTimeout(() => {
+    clearInterval(intervalId);
+    varnishDueDate.style.backgroundColor = ''; // 背景色をクリア
+    varnishDueDate.style.color = 'black'; // 文字色を元に戻す
+  }, 15000); // 15秒後にクリア(setIntervalによっては偶数秒でないと色が残ることもある)
+}
