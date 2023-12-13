@@ -24,12 +24,14 @@ body {
   font-size: 14px;
   margin-top: 5px;
   margin-left: 10px;
+  width: 85px;
 }
 
 .varnish {
   font-size: 14px;
   margin-top: 15px;
   margin-left: 10px;
+  width: 85px;
 }
 
 .highVarnishCan {
@@ -547,3 +549,4 @@ body {
   transform: translate(0, 2px);
   border-bottom: none;
 }
+
