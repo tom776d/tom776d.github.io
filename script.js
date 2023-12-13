@@ -823,7 +823,7 @@ socket.onerror = (error) => {
 function inputCsvData(csvData) {
   let processNo = "";
   for (let i = 0; i < csvData.length; i++) {
-    if (csvData[i] === "0" || csvData[i] === "1" || csvData[i] === "2") { //0の時は入庫 1の時は使用　2は予備
+    if (csvData[i] === "0" || csvData[i] === "1" || csvData[i] === "100") { //0の時は入庫 1の時は使用　100は1つ戻る
       processNo = csvData.splice(i, 1)[0].toString(); //処理番号を変数に入れる
     }
   }
@@ -841,6 +841,9 @@ function inputCsvData(csvData) {
   }
   else if (processNo === "1" && inputtext.length === 2) {  //処理番号1:出庫、配列の要素数2の時は高粘度ワニス出庫
     issueHighVisVanish();    //入力データ高粘度ワニス出庫処理関数実行
+  }
+  else if(processNo === "100"){
+    backToData();  //１つ戻る関数の呼び出し
   }
 }
 
