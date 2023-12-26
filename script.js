@@ -1331,6 +1331,7 @@ function eraseData() {
   updateStockInfocata();  //触媒在庫情報更新
   clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
   clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
+  saveData();  //データ保存
 }
 
 let selectPlace = document.getElementById('selectPlace');  //選択された消去したい場所
