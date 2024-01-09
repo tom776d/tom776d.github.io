@@ -53,6 +53,7 @@ let inventoryCountP810 = 0;    //在庫数
 //触媒入庫P710///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalCatlystP710(getday) {
   if (catalystStockDateP710.length < 16) {  //MAX在庫数15
+
     backData();  //１つ前のデータを保存
     const parsedDay = new Date(getday);  //日付型に変更
     catalystStockDateP710.push(parsedDay);  //配列に格納
@@ -72,7 +73,8 @@ function arrivalCatlystP710(getday) {
 //触媒出庫P710///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function shippingCatlystP710() {
   if (catalystStockDateP710.length > 0) {
-    backData();  //１つ前のデータを保存
+    //１つ前のデータを保存
+    backData();
     catalystStockDateP710.shift();  //配列に格納
     catalystStockDueDateP710.shift();  //配列に格納
     itemOutSound();  //効果音
@@ -90,7 +92,8 @@ function shippingCatlystP710() {
 //触媒入庫P810///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalCatlystP810(getday) {
   if (catalystStockDateP810.length < 16) {  //MAX在庫数15
-    backData();  //１つ前のデータを保存
+    //１つ前のデータを保存
+    backData();
     const parsedDay = new Date(getday);  //日付型に変更
     catalystStockDateP810.push(parsedDay);  //配列に格納
     const dueDate = new Date(parsedDay);  //duedateに納入日を日付型で格納
@@ -109,7 +112,8 @@ function arrivalCatlystP810(getday) {
 //触媒出庫P810///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function shippingCatlystP810() {
   if (catalystStockDateP810.length > 0) {
-    backData();  //１つ前のデータを保存
+    //１つ前のデータを保存
+    backData();
     catalystStockDateP810.shift();  //配列に格納
     catalystStockDueDateP810.shift();  //配列に格納
   } else {
@@ -164,6 +168,7 @@ function alertP8() {
   window.open("AlermP8.html", null, 'width=740,height=460,toolbar=no,menubar=no,scrollbars=no');
   clearTimeout(buttonBTimer);
 };
+
 //ワニス番地表示/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function inVarnishPlaceNumber() {
   const firstVarnishP710 = varnishStock[firstVarnishElementP710].stockPlace;  //P7使用優先
@@ -336,31 +341,59 @@ function updateStockInfoHighVarnish() {
 
 // ワニス入庫処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalVanish(place, getDate, line) {
-  backData();  //１つ前のデータを保存
+  //１つ前のデータを保存
+  backData();
+  //オブジェクト配列からplaceと同じオブジェクトを格納
+  const varnishStockplace = varnishStock.find(item => item.stockPlace === place);
   // HTMLの<input type="date">から取得した文字列を日付型に変換
   const parsedDate = new Date(getDate);
 
-  for (const object of varnishStock) {  //ワニス在庫のオブジェクト配列
-    if (object.stockPlace === place) {  //入力placeとオブジェクトのstockplaceが同一の時に
-      if (object.arrivalDate === "") {  //データがない時
-        object.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
-        const dueDate = new Date(parsedDate);  //duedateに納入日を日付型で格納
-        dueDate.setDate(parsedDate.getDate() + 30);  // 30日後の日付を計算
-        object.dueDate = dueDate;  //オブジェクトの期限日を格納
-        object.line = line;        //オブジェクトのライン名を格納
-        itemInSound(); //効果音
-      } else {
-        alertSound();  //警告音
-        alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
-      }
-    }
+  if (varnishStockplace.arrivalDate === "") {
+    varnishStockplace.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
+    const dueDate = new Date(parsedDate);  //duedateに納入日を日付型で格納
+    dueDate.setDate(parsedDate.getDate() + 30);  // 30日後の日付を計算
+    varnishStockplace.dueDate = dueDate;  //オブジェクトの期限日を格納
+    varnishStockplace.line = line;  //オブジェクトのライン名を格納
+    itemInSound(); //効果音
+
   }
+  else {
+    alertSound();  //警告音
+    alert("その場所にはすでに入庫されています。今一度場所をご確認ください。");  //データがある時は入力できないのでアラート
+  }
+
   stockSort();    //優先順位更新
   enteringTheDepo();   //優先順位更新
   updateStockInfoVarnish();   //在庫情報更新
   varnishStockCount();  //在庫数更新
   saveData();  //データ保存
-  flickeringColor(place,"varnishDueDate");  //文字背景点滅処理
+  flickeringColor(place, "varnishDueDate");  //文字背景点滅処理
+}
+
+//文字背景の点滅処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function flickeringColor(place, type) {
+
+  let varnishDueDate = document.getElementById(`${type}${place}`);
+  console.log(varnishDueDate);
+  console.log(`${type}${place}`);
+  // 文字背景を緑色にする関数
+  function toggleBackgroundColor() {
+    if (varnishDueDate.style.backgroundColor === 'blue') {
+      varnishDueDate.style.backgroundColor = '';
+      varnishDueDate.style.color = 'black'; // 文字色を元に戻す
+    } else {
+      varnishDueDate.style.backgroundColor = 'blue';
+      varnishDueDate.style.color = 'white'; // 背景が緑の場合に文字色を白に変更
+    }
+  }
+  //点滅表示
+  let intervalId = setInterval(toggleBackgroundColor, 500); // 0.5秒ごとに実行
+  // 60秒後に点滅を停止
+  setTimeout(() => {
+    clearInterval(intervalId);
+    varnishDueDate.style.backgroundColor = ''; // 背景色をクリア
+    varnishDueDate.style.color = 'black'; // 文字色を元に戻す
+  }, 15000); // 15秒後にクリア(setIntervalによっては偶数秒でないと色が残ることもある)
 }
 
 //ワニス入庫ボタン3//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -370,7 +403,6 @@ button3.addEventListener("click", function () {  //ボタンがクリックさ�
   const getInputDate = document.getElementById("stockDate"); //
   const getDate = getInputDate.value; //日付データ値を格納
   const line = "P710"; //フォーム追加後に変更
-
   arrivalVanish(place, getDate, line);  //入庫処理 arrival 関数を呼び出す
 });
 
@@ -439,7 +471,8 @@ button13.addEventListener("click", function () {  //ボタンがクリックさ�
 
 // 高粘度ワニス入庫処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
-  backData();  //１つ前のデータを保存
+  //１つ前のデータを保存
+  backData();
   // HTMLの<input type="date">から取得した文字列を日付型に変換
   const parsedDate = new Date(getDate);
   let array = [];
@@ -462,7 +495,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
     enteringTheDepoHighVisP810();   //入庫優先処理
     updateStockInfoHighVarnish();   //在庫情報画面更新
     saveData();  //データ保存
-    flickeringColor(place,"highVarnishDueDate");  //文字背景点滅処理
+    flickeringColor(place, "highVarnishDueDate");  //文字背景点滅処理
   }
   else {
     array = highViscosityVarnishStockP710;
@@ -483,20 +516,21 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
     enteringTheDepoHighVisP710();   //入庫優先処理
     updateStockInfoHighVarnish();    //在庫情報画面更新
     saveData();  //データ保存
-    flickeringColor(place,"highVarnishDueDate");  //文字背景点滅処理
+    flickeringColor(place, "highVarnishDueDate");  //文字背景点滅処理
   }
 }
 
 //ワニス使用処理////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function use(place, line) {
-  backData();  //１つ前のデータを保存
+  //１つ前のデータを保存
+  backData();
   for (const object of varnishStock) {  //ワニス在庫のオブジェクト配列
     if (object.stockPlace === place) {  //入力placeとオブジェクトのstockplaceが同一の時に
       if (object.arrivalDate !== "") {  //データがある時
         object.arrivalDate = "";  //オブジェクトの納入日を空
         object.dueDate = "";  //オブジェクトの期限日を空
         object.line = "";        //オブジェクトのライン名を空
-        itemOutSound(); //効果音
+        itemOutSound();  //効果音
       } else {
         alertSound();  //警告音
         alert("その場所に使用できるものはありません。場所をご確認ください。");  //データがない時は使用できないのでアラート
@@ -508,12 +542,12 @@ function use(place, line) {
   updateStockInfoVarnish();   //在庫情報更新
   varnishStockCount()  //在庫数更新
   saveData();  //データ保存
-  
+
   //触媒入れ忘れ防止ポカヨケ
   if (line === "P810") {
-    buttonBTimer = setTimeout(alertP8, 0.5 * 60 * 1000); // 0.5分をミリ秒に変換
+    buttonBTimer = setTimeout(alertP8, 0.5 * 60 * 1000); // 3分をミリ秒に変換
   } else {
-    buttonATimer = setTimeout(alertP7, 0.5 * 60 * 1000); // 0.5分をミリ秒に変換
+    buttonATimer = setTimeout(alertP7, 0.5 * 60 * 1000); // 3分をミリ秒に変換
   }
 }
 
@@ -559,7 +593,8 @@ button14.addEventListener("click", shippingCatlystP810);
 
 //高粘度ワニス使用処理////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function useHighVis(place, line) {
-  backData();  //１つ前のデータを保存
+  //１つ前のデータを保存
+  backData();
   let array = [];
   if (line === "P710") {
     array = highViscosityVarnishStockP710;
@@ -698,7 +733,7 @@ function enteringTheDepo() {
   }
   if (changeFlag === false) {
     alertSound();  //警告音
-    alert("在庫がいっぱいだよ！")
+    alert("在庫がいっぱいだよ4");
   }
 }
 
@@ -724,8 +759,8 @@ function enteringTheDepoHighVisP710() {
     }
   }
   if (changeFlag === false) {
-  　alertSound();  //警告音
-    alert("在庫がいっぱいだよ！")
+    alertSound();  //警告音
+    alert("在庫がいっぱいだよ5");
   }
 }
 
@@ -751,8 +786,8 @@ function enteringTheDepoHighVisP810() {
     }
   }
   if (changeFlag === false) {
-    
-    alert("在庫がいっぱいだよ！")
+    alertSound();  //警告音
+    alert("在庫がいっぱいだよ6");
   }
 }
 
@@ -770,25 +805,25 @@ socket.onopen = () => {
   connectionConfirmation.innerText = indication;
 };
 
-let isProcessing = false;
+let isProcessing = false; //2重送信防止のための変数
 
 socket.onmessage = (event) => {
-  if(!isProcessing){
+  if (!isProcessing) {
     isProcessing = true;
 
     console.log("イベント発生");
     // Pythonサーバーからデータを受信したときの処理
     let data = event.data;
     console.log('受信したデータ:', data);
-    if(data.length <= 20){  //json保存データが処理される対策
-      if(data.startsWith(",")){  //ワニスは先頭に日付がないので , を抜く
+    if (data.length <= 20) {  //json保存データが処理される対策
+      if (data.startsWith(",")) {  //ワニスは先頭に日付がないので , を抜く
         data = data.slice(1);
         console.log(data);
       }
-      else{
-      //年月日情報をyyyy/mm/dd形式に変更
-        let strA = data.slice(0,4);
-        let strB = data.slice(4,6);
+      else if (data !== "100") {
+        //年月日情報をyyyy/mm/dd形式に変更
+        let strA = data.slice(0, 4);
+        let strB = data.slice(4, 6);
         let strC = data.slice(6);
         data = strA + "/" + strB + "/" + strC;
       }
@@ -823,7 +858,7 @@ socket.onerror = (error) => {
 function inputCsvData(csvData) {
   let processNo = "";
   for (let i = 0; i < csvData.length; i++) {
-    if (csvData[i] === "0" || csvData[i] === "1" || csvData[i] === "100") { //0の時は入庫 1の時は使用　100は1つ戻る
+    if (csvData[i] === "0" || csvData[i] === "1" || csvData[i] === "100") { //0の時は入庫 1の時は使用　100は戻る
       processNo = csvData.splice(i, 1)[0].toString(); //処理番号を変数に入れる
     }
   }
@@ -832,7 +867,8 @@ function inputCsvData(csvData) {
       inputtext.push(element);
     }
   }
-  console.log(inputtext)
+  console.log(processNo);
+
   if (processNo === "0") { //処理番号0:入庫、の時は入庫
     warehousing();  //入力データワニス入庫処理関数実行
   }
@@ -842,7 +878,7 @@ function inputCsvData(csvData) {
   else if (processNo === "1" && inputtext.length === 2) {  //処理番号1:出庫、配列の要素数2の時は高粘度ワニス出庫
     issueHighVisVanish();    //入力データ高粘度ワニス出庫処理関数実行
   }
-  else if(processNo === "100"){
+  else if (processNo === "100") {
     backToData("handy");  //１つ戻る関数の呼び出し
   }
 }
@@ -1019,6 +1055,7 @@ if (jsonLoadData) {
   // ローカルストレージにデータが存在しない場合の処理
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+  //alertSound();  //警告音
   alert('No data found in local storage.');
 }
 
@@ -1058,7 +1095,7 @@ function loadData() {
         firstHighVisVarnishElementP710 = loadedData.firstHighVisVarnishElementP710;
         firstHighVisVarnishElementP810 = loadedData.firstHighVisVarnishElementP810;
 
-        dataLoadSound();  //効果音
+        dataLoadSound()  //効果音
         updateStockInfoVarnish(); //ワニス在庫表示更新
         updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
         updateStockInfocata();  //触媒在庫情報更新
@@ -1074,7 +1111,7 @@ function loadData() {
     reader.readAsText(file);
     // ファイル名を表示する
   } else {
-    alertSound(); //効果音
+    alertSound();  //効果音
     alert('ファイルが選択されていません。');
   }
 }
@@ -1104,13 +1141,13 @@ function alermSound() {
   document.getElementById("AlermSound").play();
 }
 
-//itemin/////
+//itemIn/////
 function itemInSound() {
   document.getElementById("itemInSound").currentTime = 0;
   document.getElementById("itemInSound").play();
 }
 
-//itemout/////
+//itemOut/////
 function itemOutSound() {
   document.getElementById("itemOutSound").currentTime = 0;
   document.getElementById("itemOutSound").play();
@@ -1136,7 +1173,6 @@ function autoRefresh() {
 // ページ読み込み後、毎時autoRefreshを呼ぶ
 setInterval(autoRefresh, 3600000);
 
-//入力間違いの時に１つ戻る処理backData////////////////////////////////////////////////////////////////////////////////////
 //backData////////////////////////////////////////////////////////////////////////////////////
 // 1つ戻るデータ格納用変数
 let backDataVarnishStock = {};
@@ -1155,7 +1191,7 @@ let backDataFirstVarnishElementP710 = 0;
 let backDataFirstVarnishElementP810 = 0;
 let backDataFirstHighVisVarnishElementP710 = 0;
 let backDataFirstHighVisVarnishElementP810 = 0;
-let backToDataFlag = 0;  //戻れるかのフラグ。0ならOK、1ならNG
+let backToDataFlag = 1;  //戻れるかのフラグ。0ならOK、1ならNG
 
 //戻すデータの格納処理
 function backData() {  //メモリ内の同じところを参照しないようにjsonで処理
@@ -1178,7 +1214,7 @@ function backData() {  //メモリ内の同じところを参照しないよう�
   backToDataFlag = 0;
 }
 
-//backDtataに戻す
+//backDataからデータを戻す
 function backToData(input) {    //メモリ内の同じところを参照しないようにjsonで処理
   if (backToDataFlag === 0) {
     varnishStock = JSON.parse(JSON.stringify(backDataVarnishStock));
@@ -1218,11 +1254,11 @@ function backToData(input) {    //メモリ内の同じところを参照しな�
 }
 
 //１つ戻る処理実行
-//１つ戻る処理実行
 const button17 = document.getElementById("button17");
 button17.addEventListener("click", () => backToData("button"));   //ボタンがクリックされたとき動作
 
-//期限日が近づいたら背景色を変化////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//期限日が近づいたら背景色を変化///////////////////////////////////////////////////////////////////////////////////
 // ページロード時と日付変更時の処理をまとめた関数
 function updateVarnishColors() {
   // 入力された日付を取得
@@ -1300,6 +1336,7 @@ window.addEventListener('load', updateVarnishColors);
 // Date input change event
 document.getElementById('stockDate').addEventListener('change', updateVarnishColors);
 
+
 //選択してデータを消去/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function eraseData() {
   let selectedNum = Number(selectPlace.value);  //HTMLで選択されたvalueをnumber型へ変更し格納
@@ -1340,28 +1377,3 @@ let elaseButton = document.getElementById('button18');
 elaseButton.addEventListener('click', eraseData);         //ボタン18クリックでelaseData関数が呼び出される
 
 
-//文字背景の点滅処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function flickeringColor(place,type) {
- 
-  let varnishDueDate = document.getElementById(`${type}${place}`);
-  console.log(varnishDueDate);
-  console.log(`${type}${place}`);
-  // 文字背景を緑色にする関数
-  function toggleBackgroundColor() {
-    if (varnishDueDate.style.backgroundColor === 'blue') {
-      varnishDueDate.style.backgroundColor = '';
-      varnishDueDate.style.color = 'black'; // 文字色を元に戻す
-    } else {
-      varnishDueDate.style.backgroundColor = 'blue';
-      varnishDueDate.style.color = 'white'; // 背景が緑の場合に文字色を白に変更
-    }
-  }
-  //点滅表示
-  let intervalId = setInterval(toggleBackgroundColor, 500); // 0.5秒ごとに実行
-  // 60秒後に点滅を停止
-  setTimeout(() => {
-    clearInterval(intervalId);
-    varnishDueDate.style.backgroundColor = ''; // 背景色をクリア
-    varnishDueDate.style.color = 'black'; // 文字色を元に戻す
-  }, 15000); // 15秒後にクリア(setIntervalによっては偶数秒でないと色が残ることもある)
-}
