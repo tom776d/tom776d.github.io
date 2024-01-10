@@ -10,7 +10,7 @@ async def receive_data():
             # "stockPlace"の文字列が含まれているか確認
             if "stockPlace" in text_data:
                 # テキストデータをファイルとして保存
-                with open("savedata/savedata.json", "w") as file:
+                with open("/home/pi/Desktop/データ連携/savedata.json", "w") as file:
                     file.write(text_data)
                     print("ファイルが保存されました")
 
