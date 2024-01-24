@@ -41,7 +41,7 @@ class EventHandler(FileSystemEventHandler):
 def main():
     observer = Observer()
     observer.schedule(EventHandler(
-    ), path="C:\\Users\\1362991\\Desktop\\DangerousWarehouse\\polling", recursive=True)
+    ), path="home\\pi\\Desktop\\DangerousWarehouse\\polling", recursive=True)
     observer.start()
 
     while True:
