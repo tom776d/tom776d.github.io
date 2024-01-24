@@ -222,119 +222,165 @@ function inHighVarnishPlaceNumber() {
 
 //ワニス在庫情報更新///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateStockInfoVarnish() {
+   //入庫優先場所処理
+  let priorityPlace = "";
+  const priPlace = document.getElementById("varnish");
+  if (priorityPlaceVarnishElement !== 9999) {  //在庫満タンでない時
+    priorityPlace = varnishStock[priorityPlaceVarnishElement].stockPlace; //入庫優先場所を格納
+  }
+  else {
+    priPlace.innerText = "";  //在庫が満タンの時、優先入庫場所に空白を表示
+  }
+  //P7使用優先場所処理
+  let firstVarnishP710 = "";  
+  const firPlaceP7 = document.getElementById("varnishP7");
+  if (firstVarnishElementP710 !== 9999) {  //在庫がある時
+    firstVarnishP710 = varnishStock[firstVarnishElementP710].stockPlace;  //P7使用優先場所を格納
+  }
+  else {
+    firPlaceP7.innerText = "";  //在庫が無い時、優先出庫場所に空白を表示
+  }
+  //P8使用優先場所処理
+  let firstVarnishP810 = "";  
+  const firPlaceP8 = document.getElementById("varnishP8");
+  if (firstVarnishElementP810 !== 9999) {  //在庫がある時
+    firstVarnishP810 = varnishStock[firstVarnishElementP810].stockPlace;  //P8使用優先場所を格納
+  }
+  else {
+    firPlaceP8.innerText = "";  //在庫が無い時、優先出庫場所に空白を表示
+  }
+
   for (const object of varnishStock) {
     const subjectPlace = object.stockPlace;  //オブジェクトの場所を
     const subjectDuedate = new Date(object.dueDate);  //オブジェクトの期限日を格納
     const subjectLine = object.line;  //オブジェクトのラインを格納
-    const priorityPlace = varnishStock[priorityPlaceVarnishElement].stockPlace; //入庫優先場所
-    const firstVarnishP710 = varnishStock[firstVarnishElementP710].stockPlace;  //P7使用優先
-    const firstVarnishP810 = varnishStock[firstVarnishElementP810].stockPlace;  //P8使用優先
-
-    //期限日の処理
     const subjectElement = document.getElementById(`varnishDueDate${subjectPlace}`);  //期限日のhtml入力先
     const dueInputDate = subjectDuedate.toLocaleDateString('sv-SE'); //日付型の変換
     const imageElement = document.getElementById(`varnishImage${subjectPlace}`) //写真の変更先
-    const priPlace = document.getElementById("varnish");
-    const firPlaceP7 = document.getElementById("varnishP7");
-    const firPlaceP8 = document.getElementById("varnishP8");
 
-    if (dueInputDate === "Invalid Date" && priorityPlace === subjectPlace) {
-      subjectElement.innerText = "";
-      priPlace.innerText = priorityPlace;
-      imageElement.src = "indication1.jpg"; //
+    if (dueInputDate === "Invalid Date" && priorityPlace === subjectPlace) {  //期限日が空白で入庫優先場所と一致したら
+      subjectElement.innerText = "";  //期限日は空白
+      priPlace.innerText = priorityPlace;  //入庫優先場所を表示
     }
-    else if (dueInputDate === "Invalid Date" && priorityPlace !== subjectPlace) {
-      subjectElement.innerText = "";
-      imageElement.src = "indication2.jpg"; //)
+    else if (dueInputDate === "Invalid Date" && priorityPlace !== subjectPlace) {  //期限日が空白で入庫優先場所と不一致の時
+      subjectElement.innerText = "";  //期限日は空白
+      imageElement.src = "indication2.jpg";  //jpg表示
     }
-    else if (subjectLine === "P710" && firstVarnishP710 !== subjectPlace) {
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "varnish2.jpg";
+    else if (subjectLine === "P710" && firstVarnishP710 !== subjectPlace) {  //ラインがP7で優先使用でないとき
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "varnish2.jpg";  //jpg表示
     }
-    else if (subjectLine === "P810" && firstVarnishP810 !== subjectPlace) {
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "varnish1.jpg";
+    else if (subjectLine === "P810" && firstVarnishP810 !== subjectPlace) {  //ラインがP8で優先使用でないとき
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "varnish1.jpg";  //jpg表示
     }
-    else if (subjectLine === "P710" && firstVarnishP710 === subjectPlace) {
-      firPlaceP7.innerText = firstVarnishP710;
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "varnish4.jpg";
+    else if (subjectLine === "P710" && firstVarnishP710 === subjectPlace) {  //ラインがP7で優先使用のとき
+      firPlaceP7.innerText = firstVarnishP710;  //P7使用優先場所を表示
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "varnish4.jpg";  //jpg表示
     }
-    else if (subjectLine === "P810" && firstVarnishP810 === subjectPlace) {
-      firPlaceP8.innerText = firstVarnishP810;
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "varnish3.jpg";
+    else if (subjectLine === "P810" && firstVarnishP810 === subjectPlace) {  //ラインがP8で優先使用のとき
+      firPlaceP8.innerText = firstVarnishP810;  //P8使用優先場所を表示
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "varnish3.jpg";  //jpg表示
     }
   }
 }
 
 //高粘度ワニス在庫情報更新///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateStockInfoHighVarnish() {
+  //P7の入庫優先場所処理
+  let priorityPlaceP7 = ""; //入庫優先場所 
+  const priPlaceP7 = document.getElementById("inHighVarnishP7");
+  if (priorityPlaceHighVisVarnishElementP710 !== 9999) {  //在庫満タンでない時
+    priorityPlaceP7 = highViscosityVarnishStockP710[priorityPlaceHighVisVarnishElementP710].stockPlace; //入庫優先場所
+  }
+  else {
+    priPlaceP7.innerText = "";  //在庫が満タンの時、優先入庫場所に空白を表示
+  }
+  //P7使用優先場所処理
+  let firstVarnishP710 = "";  //P7使用優先
+  const firPlaceP7 = document.getElementById("highVarnishP7");
+  if(firstHighVisVarnishElementP710 !== 9999){  //在庫がある時
+    firstVarnishP710 = highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace;  //P7使用優先
+  }
+  else{
+    firPlaceP7.innerText = "";  //在庫が無い時、優先出庫場所に空白を表示
+  }
+
   for (const object of highViscosityVarnishStockP710) {
     const subjectPlace = object.stockPlace;  //オブジェクトの場所を
     const subjectDuedate = new Date(object.dueDate);  //オブジェクトの期限日を格納
     const subjectLine = object.line;  //オブジェクトのラインを格納
-    const priorityPlace = highViscosityVarnishStockP710[priorityPlaceHighVisVarnishElementP710].stockPlace; //入庫優先場所
-    const firstVarnishP710 = highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace;  //P7使用優先
-
-    //期限日の処理
     const subjectElement = document.getElementById(`highVarnishDueDate${subjectPlace}`);  //期限日のhtml入力先
     const dueInputDate = subjectDuedate.toLocaleDateString('sv-SE'); //日付型の変換
     const imageElement = document.getElementById(`highVarnishImage${subjectPlace}`) //写真の変更先
-    const priPlaceP7 = document.getElementById("inHighVarnishP7");
-    const firPlaceP7 = document.getElementById("highVarnishP7");
 
 
-    if (dueInputDate === "Invalid Date" && priorityPlace === subjectPlace) {
-      priPlaceP7.innerText = priorityPlace;
-      subjectElement.innerText = "";
-      imageElement.src = "indication1.jpg"; //
+    if (dueInputDate === "Invalid Date" && priorityPlaceP7 === subjectPlace) {  //期限日が空白で入庫優先場所と一致したら
+      priPlaceP7.innerText = priorityPlaceP7;  //入庫優先場所を表示
+      subjectElement.innerText = "";  //期限日は空白
+      imageElement.src = "indication1.jpg"; //jpg表示
     }
-    else if (dueInputDate === "Invalid Date" && priorityPlace !== subjectPlace) {
-      subjectElement.innerText = "";
-      imageElement.src = "indication2.jpg"; //)
+    else if (dueInputDate === "Invalid Date" && priorityPlaceP7 !== subjectPlace) {  //期限日が空白で入庫優先場所と不一致の時
+      subjectElement.innerText = "";  //期限日は空白
+      imageElement.src = "indication2.jpg";  //jpg表示
     }
-    else if (subjectLine === "P710" && firstVarnishP710 !== subjectPlace) {
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "highvarnish2.jpg";
+    else if (subjectLine === "P710" && firstVarnishP710 !== subjectPlace) {  //ラインがP7で優先使用でないとき
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "highvarnish2.jpg";  //jpg表示
     }
-    else if (subjectLine === "P710" && firstVarnishP710 === subjectPlace) {
-      firPlaceP7.innerText = firstVarnishP710;
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "highvarnish4.jpg";
+    else if (subjectLine === "P710" && firstVarnishP710 === subjectPlace) {  //ラインがP7で優先使用のとき
+      firPlaceP7.innerText = firstVarnishP710;  //P7使用優先場所を表示
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "highvarnish4.jpg";  //jpg表示
     }
   }
+  //ここからP8の処理
+  //入庫優先場所処理
+  let priorityPlaceP8 = "";
+  const priPlaceP8 = document.getElementById("inHighVarnishP8");
+  if (priorityPlaceHighVisVarnishElementP810 !== 9999) {  //在庫満タンでない時
+    priorityPlaceP8 = highViscosityVarnishStockP810[priorityPlaceHighVisVarnishElementP810].stockPlace; //入庫優先場所
+  }
+  else {
+    priPlaceP8.innerText = "";  //在庫が満タンの時、優先入庫場所に空白を表示
+  }
+  
+  let firstVarnishP810 = "";  //P8使用優先
+  const firPlaceP8 = document.getElementById("highVarnishP8");
+  if(firstHighVisVarnishElementP810 !== 9999){  //在庫がある時
+    firstVarnishP810 = highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace;  //P8使用優先
+  }
+  else{
+    firPlaceP8.innerText = "";  //在庫が無い時、優先出庫場所に空白を表示
+  }
+
   for (const object of highViscosityVarnishStockP810) {
     const subjectPlace = object.stockPlace;  //オブジェクトの場所を
     const subjectDuedate = new Date(object.dueDate);  //オブジェクトの期限日を格納
     const subjectLine = object.line;  //オブジェクトのラインを格納
-    const priorityPlace = highViscosityVarnishStockP810[priorityPlaceHighVisVarnishElementP810].stockPlace; //入庫優先場所
-    const firstVarnishP810 = highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace;  //P7使用優先
-
-    //期限日の処理
     const subjectElement = document.getElementById(`highVarnishDueDate${subjectPlace}`);  //期限日のhtml入力先
     const dueInputDate = subjectDuedate.toLocaleDateString('sv-SE'); //日付型の変換
     const imageElement = document.getElementById(`highVarnishImage${subjectPlace}`) //写真の変更先
-    const firPlaceP8 = document.getElementById("highVarnishP8");
-    const priPlaceP8 = document.getElementById("inHighVarnishP8");
 
-    if (dueInputDate === "Invalid Date" && priorityPlace === subjectPlace) {
-      priPlaceP8.innerText = priorityPlace;
-      subjectElement.innerText = "";
-      imageElement.src = "indication1.jpg"; //
+    if (dueInputDate === "Invalid Date" && priorityPlaceP8 === subjectPlace) {  //期限日が空白で入庫優先場所と一致したら
+      priPlaceP8.innerText = priorityPlaceP8;  //入庫優先場所を表示
+      subjectElement.innerText = "";  //期限日は空白
+      imageElement.src = "indication1.jpg";  //jpg表示
     }
-    else if (dueInputDate === "Invalid Date" && priorityPlace !== subjectPlace) {
-      subjectElement.innerText = "";
-      imageElement.src = "indication2.jpg"; //)
+    else if (dueInputDate === "Invalid Date" && priorityPlaceP8 !== subjectPlace) {  //期限日が空白で入庫優先場所と不一致の時
+      subjectElement.innerText = "";  //期限日は空白
+      imageElement.src = "indication2.jpg";  //jpg表示
     }
-    else if (subjectLine === "P810" && firstVarnishP810 !== subjectPlace) {
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "highvarnish1.jpg";
+    else if (subjectLine === "P810" && firstVarnishP810 !== subjectPlace) {  //ラインがP8で優先使用でないとき
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "highvarnish1.jpg";  //jpg表示
     }
-    else if (subjectLine === "P810" && firstVarnishP810 === subjectPlace) {
-      firPlaceP8.innerText = firstVarnishP810;
-      subjectElement.innerText = dueInputDate;
-      imageElement.src = "highvarnish3.jpg";
+    else if (subjectLine === "P810" && firstVarnishP810 === subjectPlace) {  //ラインがP8で優先使用のとき
+      firPlaceP8.innerText = firstVarnishP810;  //P8使用優先場所を表示
+      subjectElement.innerText = dueInputDate;  //期限日を表示
+      imageElement.src = "highvarnish3.jpg";  //jpg表示
     }
   }
 }
@@ -366,6 +412,7 @@ function arrivalVanish(place, getDate, line) {
   enteringTheDepo();   //優先順位更新
   updateStockInfoVarnish();   //在庫情報更新
   varnishStockCount();  //在庫数更新
+  updateVarnishColors();  //期限日が近づいたら背景色を変化
   saveData();  //データ保存
   flickeringColor(place, "varnishDueDate");  //文字背景点滅処理
 }
@@ -494,6 +541,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
     stockSortHighVisP810();    //優先順位更新
     enteringTheDepoHighVisP810();   //入庫優先処理
     updateStockInfoHighVarnish();   //在庫情報画面更新
+    updateVarnishColors();  //期限日が近づいたら背景色を変化
     saveData();  //データ保存
     flickeringColor(place, "highVarnishDueDate");  //文字背景点滅処理
   }
@@ -515,6 +563,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
     stockSortHighVisP710();    //優先順位更新
     enteringTheDepoHighVisP710();   //入庫優先処理
     updateStockInfoHighVarnish();    //在庫情報画面更新
+    updateVarnishColors();  //期限日が近づいたら背景色を変化
     saveData();  //データ保存
     flickeringColor(place, "highVarnishDueDate");  //文字背景点滅処理
   }
@@ -541,6 +590,7 @@ function use(place, line) {
   enteringTheDepo()   //入庫優先順位更新
   updateStockInfoVarnish();   //在庫情報更新
   varnishStockCount()  //在庫数更新
+  updateVarnishColors();  //期限日が近づいたら背景色を変化
   saveData();  //データ保存
 
   //触媒入れ忘れ防止ポカヨケ
@@ -614,6 +664,7 @@ function useHighVis(place, line) {
     stockSortHighVisP710();    //優先順位更新
     enteringTheDepoHighVisP710();   //優先順位更新
     updateStockInfoHighVarnish();   //在庫情報画面更新
+    updateVarnishColors();  //期限日が近づいたら背景色を変化
     saveData();  //データ保存
   }
   else if (line === "P810") {
@@ -634,18 +685,21 @@ function useHighVis(place, line) {
     stockSortHighVisP810();    //優先順位更新
     enteringTheDepoHighVisP810();   //優先順位更新
     updateStockInfoHighVarnish();   //在庫情報画面更新
+    updateVarnishColors();  //期限日が近づいたら背景色を変化
     saveData();  //データ保存
   }
 }
 
 
 //ワニス使用優先///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-let firstVarnishElementP710 = 0;
-let firstVarnishElementP810 = 0;
+let firstVarnishElementP710 = 9999;
+let firstVarnishElementP810 = 9999;
 
 function stockSort() {
   let firstDateA = new Date(9999, 11, 31);   //一番早い日付としての変数にまずは仮としてありえない日付に置く
   let firstDateB = new Date(9999, 11, 31);   //一番早い日付としての変数にまずは仮としてありえない日付に置く
+  firstVarnishElementP710 = 9999;  //空の時9999
+  firstVarnishElementP810 = 9999;  //空の時9999
   for (let i = 0; i < varnishStock.length; i++) {    //オブジェクトをループ
     if (varnishStock[i].line === "P710") {
       const objDate = varnishStock[i].arrivalDate;     //変数設定
@@ -671,10 +725,11 @@ function stockSort() {
 }
 
 //P710高粘度ワニス使用優先///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-let firstHighVisVarnishElementP710 = 0;
+let firstHighVisVarnishElementP710 = 9999;
 
 function stockSortHighVisP710() {
   let firstDateA = new Date(9999, 11, 31);   //一番早い日付としての変数にまずは仮としてありえない日付に置く
+  firstHighVisVarnishElementP710 = 9999;  //空の時9999
 
   for (let i = 0; i < highViscosityVarnishStockP710.length; i++) {    //オブジェクトをループ
     if (highViscosityVarnishStockP710[i].line === "P710") {
@@ -691,10 +746,11 @@ function stockSortHighVisP710() {
 }
 
 //P810高粘度ワニス使用優先///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-let firstHighVisVarnishElementP810 = 0;
+let firstHighVisVarnishElementP810 = 9999;
 
 function stockSortHighVisP810() {
   let firstDateA = new Date(9999, 11, 31);   //一番早い日付としての変数にまずは仮としてありえない日付に置く
+  firstHighVisVarnishElementP810 = 9999;  //空の時9999
 
   for (let i = 0; i < highViscosityVarnishStockP810.length; i++) {    //オブジェクトをループ
     if (highViscosityVarnishStockP810[i].line === "P810") {
@@ -732,8 +788,7 @@ function enteringTheDepo() {
     }
   }
   if (changeFlag === false) {
-    alertSound();  //警告音
-    alert("在庫がいっぱいだよ4");
+    priorityPlaceVarnishElement = 9999;  //ありえない数字に置き換える
   }
 }
 
@@ -759,8 +814,7 @@ function enteringTheDepoHighVisP710() {
     }
   }
   if (changeFlag === false) {
-    alertSound();  //警告音
-    alert("在庫がいっぱいだよ5");
+    priorityPlaceHighVisVarnishElementP710 = 9999;  //ありえない数字に置き換える
   }
 }
 
@@ -786,8 +840,7 @@ function enteringTheDepoHighVisP810() {
     }
   }
   if (changeFlag === false) {
-    alertSound();  //警告音
-    alert("在庫がいっぱいだよ6");
+    priorityPlaceHighVisVarnishElementP810 = 9999;  //ありえない数字に置き換える
   }
 }
 
@@ -808,6 +861,7 @@ socket.onopen = () => {
 let isProcessing = false; //2重送信防止のための変数
 
 socket.onmessage = (event) => {
+  console.log("イベント受信");
   if (!isProcessing) {
     isProcessing = true;
 
@@ -834,8 +888,8 @@ socket.onmessage = (event) => {
 
     setTimeout(() => {  //２重処理無効のため
       isProcessing = false;
-    }, 1000);  //1秒後に処理を有効化
-
+    }, 4000);  //4秒後に処理を有効化
+    console.log(isProcessing);
   } else {
     console.log("処理中...");
   }
@@ -868,6 +922,8 @@ function inputCsvData(csvData) {
     }
   }
   console.log(processNo);
+  console.log(inputtext.length);
+  console.log(inputtext);
 
   if (processNo === "0") { //処理番号0:入庫、の時は入庫
     warehousing();  //入力データワニス入庫処理関数実行
@@ -900,14 +956,23 @@ function warehousing() {
   }
   //ワニス入庫処理
   if (inputtext.length === 1) {   //ワニス入庫の時は要素が１つ
-    const place = varnishStock[priorityPlaceVarnishElement].stockPlace;   //入庫優先場所
-    for (const element of inputtext) {
-      if (element === lineA || element === lineC) {
-        line = "P710";
+    let place = "";   //入庫優先場所
+    if (priorityPlaceVarnishElement !== 9999) {
+      place = varnishStock[priorityPlaceVarnishElement].stockPlace;   //入庫優先場所
+      for (const element of inputtext) {
+        if (element === lineA || element === lineC) {
+          line = "P710";
+        }
+        else if (element === lineB) {
+          line = "P810";
+        }
       }
-      else if (element === lineB) {
-        line = "P810";
-      }
+    }
+    else {
+      inputtext = [];     //入力データ初期化
+      updateStockInfoVarnish()  //画面更新
+      alert("在庫がいっぱいです！");
+      return;  //処理終了
     }
     arrivalVanish(place, getDate, line)    //ワニス入庫処理実行
   }
@@ -919,12 +984,28 @@ function warehousing() {
     const yearMonthDay = /(年|月|日)/;
     for (const element of inputtext) {
       if (element === lineA || element === lineC) {
-        line = "P710";
-        place = highViscosityVarnishStockP710[priorityPlaceHighVisVarnishElementP710].stockPlace;
+        if (priorityPlaceHighVisVarnishElementP710 !== 9999) {
+          line = "P710";
+          place = highViscosityVarnishStockP710[priorityPlaceHighVisVarnishElementP710].stockPlace;
+        }
+        else {   //棚が満タンの時
+          inputtext = [];     //入力データ初期化
+          updateStockInfoHighVarnish()  //画面更新
+          alert("在庫がいっぱいです！");
+          return;  //処理終了
+        }
       }
       else if (element === lineB) {
-        line = "P810";
-        place = highViscosityVarnishStockP810[priorityPlaceHighVisVarnishElementP810].stockPlace;
+        if (priorityPlaceHighVisVarnishElementP810 !== 9999) {
+          line = "P810";
+          place = highViscosityVarnishStockP810[priorityPlaceHighVisVarnishElementP810].stockPlace;
+        }
+        else {  //棚が満タンの時
+          inputtext = [];     //入力データ初期化
+          updateStockInfoHighVarnish()  //画面更新
+          alert("在庫がいっぱいです！");
+          return;  //処理終了
+        }
       }
       //ここから期限日の処理
       else if (yearMonthDay.test(element)) {  //要素に年月日が含まれるなら
@@ -957,10 +1038,22 @@ function issueVanish() {
   if (inputtext.length === 1) {
     for (const element of inputtext) {
       if (element === lineA || element === lineC) {
-        use(varnishStock[firstVarnishElementP710].stockPlace, "P710");
+        if (firstVarnishElementP710 !== 9999) {
+          use(varnishStock[firstVarnishElementP710].stockPlace, "P710");
+        }
+        else {
+          updateStockInfoVarnish();
+          alert("物がありません");
+        }
       }
       else if (element === lineB) {
-        use(varnishStock[firstVarnishElementP810].stockPlace, "P810");
+        if (firstVarnishElementP810 !== 9999) {
+          use(varnishStock[firstVarnishElementP810].stockPlace, "P810");
+        }
+        else {
+          updateStockInfoVarnish();
+          alert("物がありません");
+        }
       }
     }
   }
@@ -1050,11 +1143,13 @@ if (jsonLoadData) {
 
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+  updateVarnishColors();  //期限日が近づいたら背景色を変化
 
 } else {
   // ローカルストレージにデータが存在しない場合の処理
   updateStockInfoVarnish(); //ワニス在庫表示更新
   updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
+  updateVarnishColors();  //期限日が近づいたら背景色を変化
   //alertSound();  //警告音
   alert('No data found in local storage.');
 }
@@ -1099,6 +1194,7 @@ function loadData() {
         updateStockInfoVarnish(); //ワニス在庫表示更新
         updateStockInfoHighVarnish();  //高粘度ワニス在庫表示更新
         updateStockInfocata();  //触媒在庫情報更新
+        updateVarnishColors();  //期限日が近づいたら背景色を変化
         alert("データ復元完了");
 
       } catch (error) {
@@ -1240,6 +1336,7 @@ function backToData(input) {    //メモリ内の同じところを参照しな�
     updateStockInfocata();  //触媒在庫情報更新
     clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
     clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
+    updateVarnishColors();  //期限日が近づいたら背景色を変化
     console.log(input);
     if (input === "button") {
       alert("データ戻し完了");
@@ -1368,6 +1465,7 @@ function eraseData() {
   updateStockInfocata();  //触媒在庫情報更新
   clearTimeout(buttonBTimer);  //入れ忘れ防止タイマーキャンセル
   clearTimeout(buttonATimer);  //入れ忘れ防止タイマーキャンセル
+  updateVarnishColors();  //期限日が近づいたら背景色を変化
   saveData();  //データ保存
 }
 
