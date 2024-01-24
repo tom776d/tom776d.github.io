@@ -16,8 +16,11 @@ async def connect_to_websocket_server(data):
 
 class EventHandler(FileSystemEventHandler):
     def on_modified(self, event):
+        if event.is_directory:
+            return  # Ignore events for directories
+
         print(f"Modified: {event.src_path}")
-        if not event.is_directory and event.src_path.endswith('processing.csv'):
+        if event.src_path.endswith('processing.csv'):
             try:
                 print(f'CSVファイルが変更されました: {event.src_path}')
                 with open(event.src_path, 'r') as csv_file:
