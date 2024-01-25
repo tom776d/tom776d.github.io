@@ -171,7 +171,7 @@ function alertP8() {
 
 //ワニス在庫情報更新///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateStockInfoVarnish() {
-   //入庫優先場所処理
+  //入庫優先場所処理
   let priorityPlace = "";
   const priPlace = document.getElementById("varnish");
   if (priorityPlaceVarnishElement !== 9999) {  //在庫満タンでない時
@@ -181,7 +181,7 @@ function updateStockInfoVarnish() {
     priPlace.innerText = "";  //在庫が満タンの時、優先入庫場所に空白を表示
   }
   //P7使用優先場所処理
-  let firstVarnishP710 = "";  
+  let firstVarnishP710 = "";
   const firPlaceP7 = document.getElementById("varnishP7");
   if (firstVarnishElementP710 !== 9999) {  //在庫がある時
     firstVarnishP710 = varnishStock[firstVarnishElementP710].stockPlace;  //P7使用優先場所を格納
@@ -190,7 +190,7 @@ function updateStockInfoVarnish() {
     firPlaceP7.innerText = "";  //在庫が無い時、優先出庫場所に空白を表示
   }
   //P8使用優先場所処理
-  let firstVarnishP810 = "";  
+  let firstVarnishP810 = "";
   const firPlaceP8 = document.getElementById("varnishP8");
   if (firstVarnishElementP810 !== 9999) {  //在庫がある時
     firstVarnishP810 = varnishStock[firstVarnishElementP810].stockPlace;  //P8使用優先場所を格納
@@ -251,10 +251,10 @@ function updateStockInfoHighVarnish() {
   //P7使用優先場所処理
   let firstVarnishP710 = "";  //P7使用優先
   const firPlaceP7 = document.getElementById("highVarnishP7");
-  if(firstHighVisVarnishElementP710 !== 9999){  //在庫がある時
+  if (firstHighVisVarnishElementP710 !== 9999) {  //在庫がある時
     firstVarnishP710 = highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace;  //P7使用優先
   }
-  else{
+  else {
     firPlaceP7.innerText = "";  //在庫が無い時、優先出庫場所に空白を表示
   }
 
@@ -296,13 +296,13 @@ function updateStockInfoHighVarnish() {
   else {
     priPlaceP8.innerText = "";  //在庫が満タンの時、優先入庫場所に空白を表示
   }
-  
+
   let firstVarnishP810 = "";  //P8使用優先
   const firPlaceP8 = document.getElementById("highVarnishP8");
-  if(firstHighVisVarnishElementP810 !== 9999){  //在庫がある時
+  if (firstHighVisVarnishElementP810 !== 9999) {  //在庫がある時
     firstVarnishP810 = highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace;  //P8使用優先
   }
-  else{
+  else {
     firPlaceP8.innerText = "";  //在庫が無い時、優先出庫場所に空白を表示
   }
 
@@ -1026,10 +1026,22 @@ function issueHighVisVanish() {
   //高粘度ワニス出庫処理
   for (const element of inputtext) {
     if (element === lineA || element === lineC) {
-      useHighVis(highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace, "P710");
+      if (firstHighVisVarnishElementP710 !== 9999) {
+        useHighVis(highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace, "P710");
+      }
+      else {
+        updateStockInfoHighVarnish();  //高粘度ワニス在庫情報更新
+        alert("物がありません");
+      }
     }
     else if (element === lineB) {
-      useHighVis(highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace, "P810");
+      if (firstHighVisVarnishElementP810 !== 9999) {
+        useHighVis(highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace, "P810");
+      }
+      else {
+        updateStockInfoHighVarnish();  //高粘度ワニス在庫情報更新
+        alert("物がありません");
+      }
     }
   }
   inputtext = [];     //入力データ初期化
