@@ -834,6 +834,8 @@ socket.onmessage = (event) => {
       csvData = data.split(",");
       console.log(csvData);
       inputCsvData(csvData);
+      csvData = [];
+      console.log(csvData);
     }
 
     setTimeout(() => {  //２重処理無効のため
@@ -992,7 +994,7 @@ function issueVanish() {
           use(varnishStock[firstVarnishElementP710].stockPlace, "P710");
         }
         else {
-          updateStockInfoVarnish();
+          updateStockInfoVarnish();  //ワニス在庫情報更新
           alert("物がありません");
         }
       }
@@ -1001,7 +1003,7 @@ function issueVanish() {
           use(varnishStock[firstVarnishElementP810].stockPlace, "P810");
         }
         else {
-          updateStockInfoVarnish();
+          updateStockInfoVarnish();  //ワニス在庫情報更新
           alert("物がありません");
         }
       }
