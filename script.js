@@ -169,57 +169,6 @@ function alertP8() {
   clearTimeout(buttonBTimer);
 };
 
-//ワニス番地表示/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function inVarnishPlaceNumber() {
-  const firstVarnishP710 = varnishStock[firstVarnishElementP710].stockPlace;  //P7使用優先
-  const firstVarnishP810 = varnishStock[firstVarnishElementP810].stockPlace;  //P8使用優先
-  const priorityPlace = varnishStock[priorityPlaceVarnishElement].stockPlace; //入庫優先場所
-  const priPlace = document.getElementById("varnish");
-  const firPlaceP7 = document.getElementById("varnishP7");
-  const firPlaceP8 = document.getElementById("varnishP8");
-  priPlace.innerText = priorityPlace;
-  if (varnishStock[1].line === "P710" && firstVarnishP710 === "A1") {
-    firPlaceP7.innerText = firstVarnishP710;
-  }
-  else {
-    firPlaceP7.innerText = "---";
-  }
-  if (varnishStock[1].line === "P810" && firstVarnishP810 === "A1") {
-    firPlaceP8.innerText = firstVarnishP810;
-  }
-  else {
-    firPlaceP8.innerText = "---";
-  }
-}
-
-//高粘度ワニス番地表示/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function inHighVarnishPlaceNumber() {
-  const firstVarnishP710 = highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace;  //P7使用優先
-  const firstVarnishP810 = highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace;  //P8使用優先
-  const priorityPlaceP710 = highViscosityVarnishStockP710[priorityPlaceHighVisVarnishElementP710].stockPlace; //入庫優先場所
-  const priorityPlaceP810 = highViscosityVarnishStockP810[priorityPlaceHighVisVarnishElementP810].stockPlace; //入庫優先場所
-  const priPlaceP7 = document.getElementById("inHighVarnishP7");
-  const priPlaceP8 = document.getElementById("inHighVarnishP8");
-  const firPlaceP7 = document.getElementById("highVarnishP7");
-  const firPlaceP8 = document.getElementById("highVarnishP8");
-  priPlaceP7.innerText = priorityPlaceP710;
-  priPlaceP8.innerText = priorityPlaceP810;
-  if (priorityPlaceP710 === firstVarnishP710) {
-    firPlaceP7.innerText = "---";
-  }
-  else {
-    firPlaceP7.innerText = firstVarnishP710;
-  }
-
-  if (priorityPlaceP810 === firstVarnishP810) {
-    firPlaceP8.innerText = "---";
-  }
-  else {
-    firPlaceP8.innerText = firstVarnishP810;
-  }
-
-}
-
 //ワニス在庫情報更新///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateStockInfoVarnish() {
    //入庫優先場所処理
@@ -261,6 +210,7 @@ function updateStockInfoVarnish() {
     if (dueInputDate === "Invalid Date" && priorityPlace === subjectPlace) {  //期限日が空白で入庫優先場所と一致したら
       subjectElement.innerText = "";  //期限日は空白
       priPlace.innerText = priorityPlace;  //入庫優先場所を表示
+      imageElement.src = "indication1.jpg";  //jpg表示
     }
     else if (dueInputDate === "Invalid Date" && priorityPlace !== subjectPlace) {  //期限日が空白で入庫優先場所と不一致の時
       subjectElement.innerText = "";  //期限日は空白
