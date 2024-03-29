@@ -1,36 +1,49 @@
-'use strict'
+﻿'use strict'
 // 1行目に記載している 'use strict' は削除しないでください
 
 //ワニス在庫配列//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let varnishStock = [
-  { stockPlace: "A1", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "A2", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "A3", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "A4", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "B1", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "B2", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "B3", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "B4", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "C1", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "C2", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "C3", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "C4", arrivalDate: "", dueDate: "", line: "" },
+  { stockPlace: "A1", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "A2", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "A3", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "A4", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "B1", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "B2", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "B3", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "B4", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "C1", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "C2", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "C3", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "C4", arrivalDate: "", dueDate: "", line: "", qr: "" },
 ];
 
 //高粘度ワニス在庫配列//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let highViscosityVarnishStockP710 = [
-  { stockPlace: "A1", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "A2", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "A3", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "A4", arrivalDate: "", dueDate: "", line: "" },
+  { stockPlace: "A1", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "A2", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "A3", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "A4", arrivalDate: "", dueDate: "", line: "", qr: "" },
 ];
 
 let highViscosityVarnishStockP810 = [
-  { stockPlace: "B1", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "B2", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "B3", arrivalDate: "", dueDate: "", line: "" },
-  { stockPlace: "B4", arrivalDate: "", dueDate: "", line: "" },
+  { stockPlace: "B1", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "B2", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "B3", arrivalDate: "", dueDate: "", line: "", qr: "" },
+  { stockPlace: "B4", arrivalDate: "", dueDate: "", line: "", qr: "" },
 ];
+
+//Y品番//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const varnishYHinban = "Y814006105";       //ワニスのY品番
+const hiVisVarnishYHinban = "Y814504185";  //高粘度ワニスのY品番
+const catalystYHinban = "Y869030070";      //触媒のY品番
+
+//組コード////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const lineA = "PT253";   //組コードが変わったらここを変更する
+const lineB = "PT451";   //組コードが変わったらここを変更する
+const lineC = "PT431";   //組コードが変わったらここを変更する
+
+//ソケット/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const socket = new WebSocket('ws://localhost:8765');
 
 //日付を今日のデータで開く/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 window.addEventListener("load", () => {
@@ -43,15 +56,17 @@ window.addEventListener("load", updateStockInfocata);  //触媒在庫数
 //触媒P710配列////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let catalystStockDateP710 = [];    //入庫日
 let catalystStockDueDateP710 = [];    //期限日
+let catalystStocQrP710 = [];    //かんばんQRデータ
 let inventoryCountP710 = 0;    //在庫数
 
 //触媒P810配列////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let catalystStockDateP810 = [];    //入庫日
 let catalystStockDueDateP810 = [];    //期限日
+let catalystStocQrP810 = [];    //かんばんQRデータ
 let inventoryCountP810 = 0;    //在庫数
 
 //触媒入庫P710///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function arrivalCatlystP710(getday) {
+function arrivalCatlystP710(getday, qrData) {
   if (catalystStockDateP710.length < 16) {  //MAX在庫数15
 
     backData();  //１つ前のデータを保存
@@ -60,6 +75,7 @@ function arrivalCatlystP710(getday) {
     const dueDate = new Date(parsedDay);  //duedateに納入日を日付型で格納
     dueDate.setDate(parsedDay.getDate() + 30);  // 30日後の日付を計算
     catalystStockDueDateP710.push(dueDate);  //配列に格納
+    catalystStocQrP710.push(qrData); //かんばんQRデータ格納
     itemInSound(); //効果音
   } else {
     alertSound();  //警告音
@@ -75,8 +91,15 @@ function shippingCatlystP710() {
   if (catalystStockDateP710.length > 0) {
     //１つ前のデータを保存
     backData();
-    catalystStockDateP710.shift();  //配列に格納
-    catalystStockDueDateP710.shift();  //配列に格納
+    catalystStockDateP710.shift();  //配列から削除
+    catalystStockDueDateP710.shift();  //配列から削除
+    const qrData = catalystStocQrP710.shift()
+    const orderData = `QR_code:${qrData}`;
+    const jsonOrderData = orderData; // オブジェクトをJSON文字列に変換
+    sendOrderData(jsonOrderData);  //オーダー情報を送信
+    console.log("オーダーを送信:", jsonOrderData);
+
+    console.log(jsonOrderData);
     itemOutSound();  //効果音
   } else {
     alertSound();  //警告音
@@ -90,7 +113,7 @@ function shippingCatlystP710() {
 }
 
 //触媒入庫P810///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function arrivalCatlystP810(getday) {
+function arrivalCatlystP810(getday, qrData) {
   if (catalystStockDateP810.length < 16) {  //MAX在庫数15
     //１つ前のデータを保存
     backData();
@@ -99,6 +122,7 @@ function arrivalCatlystP810(getday) {
     const dueDate = new Date(parsedDay);  //duedateに納入日を日付型で格納
     dueDate.setDate(parsedDay.getDate() + 30);  // 30日後の日付を計算
     catalystStockDueDateP810.push(dueDate);  //配列に格納
+    catalystStocQrP810.push(qrData);   //かんばんQRデータ格納
     itemInSound(); //効果音
   } else {
     alertSound();  //警告音
@@ -116,6 +140,12 @@ function shippingCatlystP810() {
     backData();
     catalystStockDateP810.shift();  //配列に格納
     catalystStockDueDateP810.shift();  //配列に格納
+    const qrData = catalystStocQrP810.shift()
+    const orderData = `QR_code:${qrData}`;
+    const jsonOrderData = orderData; // オブジェクトをJSON文字列に変換
+    sendOrderData(jsonOrderData);  //オーダー情報を送信
+    console.log(jsonOrderData);
+    console.log(catalystStocQrP810);
   } else {
     alertSound();  //警告音
     alert("在庫がありませんねん")
@@ -336,7 +366,7 @@ function updateStockInfoHighVarnish() {
 }
 
 // ワニス入庫処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function arrivalVanish(place, getDate, line) {
+function arrivalVanish(place, getDate, line, qr) {
   //１つ前のデータを保存
   backData();
   //オブジェクト配列からplaceと同じオブジェクトを格納
@@ -350,6 +380,7 @@ function arrivalVanish(place, getDate, line) {
     dueDate.setDate(parsedDate.getDate() + 30);  // 30日後の日付を計算
     varnishStockplace.dueDate = dueDate;  //オブジェクトの期限日を格納
     varnishStockplace.line = line;  //オブジェクトのライン名を格納
+    varnishStockplace.qr = qr; //オブジェクトのかんばんQRデータを格納
     itemInSound(); //効果音
 
   }
@@ -467,7 +498,7 @@ button13.addEventListener("click", function () {  //ボタンがクリックさ�
 });
 
 // 高粘度ワニス入庫処理//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
+function arrivalHighViscosityVanish(place, getDate, inputDueDate, line, qr) {
   //１つ前のデータを保存
   backData();
   // HTMLの<input type="date">から取得した文字列を日付型に変換
@@ -481,6 +512,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
           object.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
           object.dueDate = inputDueDate;  //オブジェクトの期限日を格納
           object.line = line;        //オブジェクトのライン名を格納
+          object.qr = qr; //かんばんQRデータ格納
           itemInSound(); //効果音
         } else {
           alertSound();  //警告音
@@ -503,6 +535,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
           object.arrivalDate = parsedDate;  //オブジェクトの納入日を格納
           object.dueDate = inputDueDate;  //オブジェクトの期限日を格納
           object.line = line;        //オブジェクトのライン名を格納
+          object.qr = qr; //かんばんQRデータ格納
           itemInSound(); //効果音
         } else {
           alertSound();  //警告音
@@ -520,7 +553,7 @@ function arrivalHighViscosityVanish(place, getDate, inputDueDate, line) {
 }
 
 //ワニス使用処理////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function use(place, line) {
+function use(place, line,) {
   //１つ前のデータを保存
   backData();
   for (const object of varnishStock) {  //ワニス在庫のオブジェクト配列
@@ -529,6 +562,11 @@ function use(place, line) {
         object.arrivalDate = "";  //オブジェクトの納入日を空
         object.dueDate = "";  //オブジェクトの期限日を空
         object.line = "";        //オブジェクトのライン名を空
+        const orderData = `QR_code:${object.qr}`;
+        const jsonOrderData = orderData; // オブジェクトをJSON文字列に変換
+        sendOrderData(jsonOrderData);  //オーダー情報を送信
+        console.log("オーダーを送信:", jsonOrderData);
+        object.qr = ""; //オブジェクトのQRデータ削除
         itemOutSound();  //効果音
       } else {
         alertSound();  //警告音
@@ -592,7 +630,7 @@ const button14 = document.getElementById("button14");
 button14.addEventListener("click", shippingCatlystP810);
 
 //高粘度ワニス使用処理////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function useHighVis(place, line) {
+function useHighVis(place, line,) {
   //１つ前のデータを保存
   backData();
   let array = [];
@@ -604,6 +642,11 @@ function useHighVis(place, line) {
           object.arrivalDate = "";  //オブジェクトの納入日を空
           object.dueDate = "";  //オブジェクトの期限日を空
           object.line = "";        //オブジェクトのライン名を空
+          const orderData = `QR_code:${object.qr}`;
+          const jsonOrderData = orderData; // オブジェクトをJSON文字列に変換
+          sendOrderData(jsonOrderData);  //オーダー情報を送信
+          console.log(jsonOrderData);
+          object.qr = ""; //オブジェクトのQRデータ削除
           itemOutSound();  //効果音
         } else {
           alertSound();  //警告音
@@ -625,6 +668,11 @@ function useHighVis(place, line) {
           object.arrivalDate = "";  //オブジェクトの納入日を空
           object.dueDate = "";  //オブジェクトの期限日を空
           object.line = "";        //オブジェクトのライン名を空
+          const orderData = `QR_code:${object.qr}`;
+          const jsonOrderData = orderData; // オブジェクトをJSON文字列に変換
+          sendOrderData(jsonOrderData);  //オーダー情報を送信
+          console.log(jsonOrderData);
+          object.qr = ""; //オブジェクトのQRデータ削除
           itemOutSound();  //効果音
         } else {
           alertSound();  //警告音
@@ -796,7 +844,7 @@ function enteringTheDepoHighVisP810() {
 
 //入庫処理ハンディー用(CSV ver)/////////////////////////////////////////////////////////////////////////////////////////////////////////
 // webSocket接続でデータを入力
-const socket = new WebSocket('ws://localhost:8765');
+
 let inputtext = [];  //ハンディーで読んだデータを格納する配列
 let csvData = [];
 let indication = "";
@@ -819,7 +867,10 @@ socket.onmessage = (event) => {
     // Pythonサーバーからデータを受信したときの処理
     let data = event.data;
     console.log('受信したデータ:', data);
-    if (data.length <= 20) {  //json保存データが処理される対策
+
+
+
+    if (!data.match("arrivalDate")) {  //json保存データが処理される対策
       if (data.startsWith(",")) {  //ワニスは先頭に日付がないので , を抜く
         data = data.slice(1);
         console.log(data);
@@ -831,10 +882,10 @@ socket.onmessage = (event) => {
         let strC = data.slice(6);
         data = strA + "/" + strB + "/" + strC;
       }
-      csvData = data.split(",");
+      csvData = data.split(",");  //データをカンマ区切りで配列に格納
       console.log(csvData);
-      inputCsvData(csvData);
-      csvData = [];
+      inputCsvData(csvData);  //csvデータ１次処理関数呼び出し
+      csvData = [];  //csvデータ初期化
       console.log(csvData);
     }
 
@@ -859,32 +910,51 @@ socket.onerror = (error) => {
   connectionConfirmation.innerText = indication;
 };
 
+//websocketへオーダーデータを送信//////////////////////////////////////////////////////////////////////////////////////////////////
+function sendOrderData(data) {
+  console.log(`orderdata${data}を送信します`);
+  setTimeout(() => {
+    socket.send(data);  // サーバーへデータ送信
+  }, 500);   // 0.5秒遅延させる
+  console.log(`orderdata${data}を送信しました`);
+}
 
 //csvデータ１次処理///////////////////////////////////////////////
 function inputCsvData(csvData) {
   let processNo = "";
+  let YHinban = "";
+  let kumiCode = "";
   for (let i = 0; i < csvData.length; i++) {
     if (csvData[i] === "0" || csvData[i] === "1" || csvData[i] === "100") { //0の時は入庫 1の時は使用　100は戻る
       processNo = csvData.splice(i, 1)[0].toString(); //処理番号を変数に入れる
     }
   }
   for (const element of csvData) {
+    if (element !== "" && element.length > 100) {  //かんばんQRデータは100文字以上あるので条件に入れる
+      YHinban = element.slice(27, 37);   //かんばんQRデータからY品番抜き取り
+      kumiCode = element.slice(79, 84); //組コードを抜取
+    }
     if (element !== "") {
       inputtext.push(element);
     }
   }
   console.log(processNo);
+  console.log(kumiCode);
+  console.log(YHinban);
   console.log(inputtext.length);
   console.log(inputtext);
 
   if (processNo === "0") { //処理番号0:入庫、の時は入庫
-    warehousing();  //入力データワニス入庫処理関数実行
+    warehousing(kumiCode, YHinban);  //入力データワニス入庫処理関数実行
   }
-  else if (processNo === "1" && inputtext.length === 1) {  //処理番号1:出庫、配列の要素数1の時はワニス出庫
-    issueVanish();    //入力データワニス出庫処理関数実行
+  else if (processNo === "1" && YHinban === varnishYHinban) {  //処理番号1:出庫、配列の要素数1の時はワニス出庫
+    issueVanish(kumiCode);    //入力データワニス出庫処理関数実行
   }
-  else if (processNo === "1" && inputtext.length === 2) {  //処理番号1:出庫、配列の要素数2の時は高粘度ワニス出庫
-    issueHighVisVanish();    //入力データ高粘度ワニス出庫処理関数実行
+  else if (processNo === "1" && YHinban === hiVisVarnishYHinban) {  //処理番号1:出庫、配列の要素数2の時は高粘度ワニス出庫
+    issueHighVisVanish(kumiCode);    //入力データ高粘度ワニス出庫処理関数実行
+  }
+  else if (processNo === "1" && YHinban === catalystYHinban) {  //処理番号1:出庫、Y品番が触媒
+    issuecatalyst(kumiCode);    //入力データ触媒出庫処理関数実行
   }
   else if (processNo === "100") {
     backToData("handy");  //１つ戻る関数の呼び出し
@@ -892,11 +962,9 @@ function inputCsvData(csvData) {
 }
 
 //入力データ入庫処理 （ライン名・高粘度ワニスは使用期限)//////////////////////////////////////////////////////////////////////////////////////////
-function warehousing() {
-  const lineA = "PT253";   //組コードが変わったらここを変更する
-  const lineB = "PT451";   //組コードが変わったらここを変更する
-  const lineC = "PT431";   //組コードが変わったらここを変更する
+function warehousing(kumiCode, YHinban) {
   let line = "";
+  let qr = "";
   const getInputDate = document.getElementById("stockDate");     //HTMLの日付データ
   const getDate = getInputDate.value; //日付データ値を格納
 
@@ -906,80 +974,106 @@ function warehousing() {
       inputtext.splice(i, 1);
     }
   }
+
+  //触媒入庫処理
+  if (YHinban === catalystYHinban) {
+    qr = inputtext.join(""); //かんばんQRデータを格納
+    if (kumiCode === lineA || kumiCode === lineC) {  //P7ラインの時
+      arrivalCatlystP710(getDate, qr);   //P7触媒入庫処理関数呼び出し
+    }
+    else if (kumiCode === lineB) {  //P8ラインの時
+      arrivalCatlystP810(getDate, qr);   //P8触媒入庫処理関数呼び出し
+    }
+  }
+
   //ワニス入庫処理
-  if (inputtext.length === 1) {   //ワニス入庫の時は要素が１つ
+  if (YHinban === varnishYHinban) {   //ワニス入庫の時は要素が１つ
     let place = "";   //入庫優先場所
     if (priorityPlaceVarnishElement !== 9999) {
       place = varnishStock[priorityPlaceVarnishElement].stockPlace;   //入庫優先場所
-      for (const element of inputtext) {
-        if (element === lineA || element === lineC) {
-          line = "P710";
-        }
-        else if (element === lineB) {
-          line = "P810";
-        }
+      if (kumiCode === lineA || kumiCode === lineC) {
+        line = "P710";
       }
+      else if (kumiCode === lineB) {
+        line = "P810";
+      }
+      qr = inputtext.join(""); //
     }
     else {
       inputtext = [];     //入力データ初期化
-      updateStockInfoVarnish()  //画面更新
+      updateStockInfoVarnish();  //画面更新
       alert("在庫がいっぱいです！");
       return;  //処理終了
     }
-    arrivalVanish(place, getDate, line)    //ワニス入庫処理実行
+    console.log(qr);
+    arrivalVanish(place, getDate, line, qr);    //ワニス入庫処理実行
   }
   //高粘度ワニスの入庫処理
-  if (inputtext.length === 2) {   //高粘度ワニス入庫の時は要素が2つ
+  if (YHinban === hiVisVarnishYHinban) {   //高粘度ワニス入庫の時は要素が2つ
+    console.log("高粘度ワニス入庫実行");
     let place = "";
     let inputDueDate = new Date();
     let standardDueDate = "";
     const yearMonthDay = /(年|月|日)/;
+    if (kumiCode === lineA || kumiCode === lineC) {
+      if (priorityPlaceHighVisVarnishElementP710 !== 9999) {
+        line = "P710";
+        place = highViscosityVarnishStockP710[priorityPlaceHighVisVarnishElementP710].stockPlace;
+      }
+      else {   //棚が満タンの時
+        inputtext = [];     //入力データ初期化
+        updateStockInfoHighVarnish()  //画面更新
+        alert("在庫がいっぱいです！");
+        return;  //処理終了
+      }
+    }
+    else if (kumiCode === lineB) {
+      if (priorityPlaceHighVisVarnishElementP810 !== 9999) {
+        line = "P810";
+        place = highViscosityVarnishStockP810[priorityPlaceHighVisVarnishElementP810].stockPlace;
+      }
+      else {  //棚が満タンの時
+        inputtext = [];     //入力データ初期化
+        updateStockInfoHighVarnish()  //画面更新
+        alert("在庫がいっぱいです！");
+        return;  //処理終了
+      }
+    }
+    //ここから期限日の処理
     for (const element of inputtext) {
-      if (element === lineA || element === lineC) {
-        if (priorityPlaceHighVisVarnishElementP710 !== 9999) {
-          line = "P710";
-          place = highViscosityVarnishStockP710[priorityPlaceHighVisVarnishElementP710].stockPlace;
-        }
-        else {   //棚が満タンの時
-          inputtext = [];     //入力データ初期化
-          updateStockInfoHighVarnish()  //画面更新
-          alert("在庫がいっぱいです！");
-          return;  //処理終了
-        }
+      console.log(element);
+      if (element.length > 100) {
+        qr = element; //
       }
-      else if (element === lineB) {
-        if (priorityPlaceHighVisVarnishElementP810 !== 9999) {
-          line = "P810";
-          place = highViscosityVarnishStockP810[priorityPlaceHighVisVarnishElementP810].stockPlace;
-        }
-        else {  //棚が満タンの時
-          inputtext = [];     //入力データ初期化
-          updateStockInfoHighVarnish()  //画面更新
-          alert("在庫がいっぱいです！");
-          return;  //処理終了
-        }
-      }
-      //ここから期限日の処理
-      else if (yearMonthDay.test(element)) {  //要素に年月日が含まれるなら
+      if (element.length < 100 && yearMonthDay.test(element)) {  //要素に年月日が含まれるなら
         standardDueDate = element.replace(/年|月/g, '-').replace(/日/, '');  //年月日から標準的な書き方に変更
         inputDueDate = new Date(standardDueDate);  //期限日を格納
       }
-      else {
+      else if (element.length < 100) {
         inputDueDate = new Date(element);  //通常のyyyy/mm/dd表記用
       }
     }
-    arrivalHighViscosityVanish(place, getDate, inputDueDate, line)    //高粘度ワニス入庫処理実行
+    console.log(qr);
+    console.log(inputDueDate);
+    arrivalHighViscosityVanish(place, getDate, inputDueDate, line, qr)    //高粘度ワニス入庫処理実行
   }
   inputtext = [];     //入力データ初期化
 }
 
 
-//入力データワニス出庫処理 
-function issueVanish() {
-  const lineA = "PT253";   //組コードが変わったらここを変更する
-  const lineB = "PT451";   //組コードが変わったらここを変更する
-  const lineC = "PT431";   //組コードが変わったらここを変更する
+//入力データ触媒出庫処理
+function issuecatalyst(kumiCode) {
+  if (kumiCode === lineA || kumiCode === lineC) {
+    shippingCatlystP710(kumiCode);
+  }
+  else if (kumiCode === lineB) {
+    shippingCatlystP810(kumiCode);
+  }
+  inputtext = [];     //入力データ初期化
+}
 
+//入力データワニス出庫処理 
+function issueVanish(kumiCode) {
   //誤入力で空白のデータがあったら除去
   for (let i = 0; i < inputtext.length; i++) {
     if (inputtext[i] === "") {
@@ -987,26 +1081,22 @@ function issueVanish() {
     }
   }
   //ワニス出庫処理
-  if (inputtext.length === 1) {
-    for (const element of inputtext) {
-      if (element === lineA || element === lineC) {
-        if (firstVarnishElementP710 !== 9999) {
-          use(varnishStock[firstVarnishElementP710].stockPlace, "P710");
-        }
-        else {
-          updateStockInfoVarnish();  //ワニス在庫情報更新
-          alert("物がありません");
-        }
-      }
-      else if (element === lineB) {
-        if (firstVarnishElementP810 !== 9999) {
-          use(varnishStock[firstVarnishElementP810].stockPlace, "P810");
-        }
-        else {
-          updateStockInfoVarnish();  //ワニス在庫情報更新
-          alert("物がありません");
-        }
-      }
+  if (kumiCode === lineA || kumiCode === lineC) {
+    if (firstVarnishElementP710 !== 9999) {
+      use(varnishStock[firstVarnishElementP710].stockPlace, "P710", kumiCode);
+    }
+    else {
+      updateStockInfoVarnish();  //ワニス在庫情報更新
+      alert("物がありません");
+    }
+  }
+  else if (kumiCode === lineB) {
+    if (firstVarnishElementP810 !== 9999) {
+      use(varnishStock[firstVarnishElementP810].stockPlace, "P810", kumiCode);
+    }
+    else {
+      updateStockInfoVarnish();  //ワニス在庫情報更新
+      alert("物がありません");
     }
   }
   inputtext = [];     //入力データ初期化
@@ -1014,11 +1104,7 @@ function issueVanish() {
 
 
 //入力データ高粘度ワニス出庫処理 
-function issueHighVisVanish() {
-  const lineA = "PT253";   //組コードが変わったらここを変更する
-  const lineB = "PT451";   //組コードが変わったらここを変更する
-  const lineC = "PT431";   //組コードが変わったらここを変更する
-
+function issueHighVisVanish(kumiCode) {
   //誤入力で空白のデータがあったら除去
   for (let i = 0; i < inputtext.length; i++) {
     if (inputtext[i] === "") {
@@ -1026,24 +1112,22 @@ function issueHighVisVanish() {
     }
   }
   //高粘度ワニス出庫処理
-  for (const element of inputtext) {
-    if (element === lineA || element === lineC) {
-      if (firstHighVisVarnishElementP710 !== 9999) {
-        useHighVis(highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace, "P710");
-      }
-      else {
-        updateStockInfoHighVarnish();  //高粘度ワニス在庫情報更新
-        alert("物がありません");
-      }
+  if (kumiCode === lineA || kumiCode === lineC) {
+    if (firstHighVisVarnishElementP710 !== 9999) {
+      useHighVis(highViscosityVarnishStockP710[firstHighVisVarnishElementP710].stockPlace, "P710", kumiCode);
     }
-    else if (element === lineB) {
-      if (firstHighVisVarnishElementP810 !== 9999) {
-        useHighVis(highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace, "P810");
-      }
-      else {
-        updateStockInfoHighVarnish();  //高粘度ワニス在庫情報更新
-        alert("物がありません");
-      }
+    else {
+      updateStockInfoHighVarnish();  //高粘度ワニス在庫情報更新
+      alert("物がありません");
+    }
+  }
+  else if (kumiCode === lineB) {
+    if (firstHighVisVarnishElementP810 !== 9999) {
+      useHighVis(highViscosityVarnishStockP810[firstHighVisVarnishElementP810].stockPlace, "P810", kumiCode);
+    }
+    else {
+      updateStockInfoHighVarnish();  //高粘度ワニス在庫情報更新
+      alert("物がありません");
     }
   }
   inputtext = [];     //入力データ初期化
@@ -1075,8 +1159,13 @@ function saveData() {
   const jsonSaveData = JSON.stringify(data);
   // ローカルストレージに保存
   localStorage.setItem('myData', jsonSaveData);
+  console.log("ローカルストレージに保存");
   //サーバーへデータ送信
-  socket.send(jsonSaveData);
+  setTimeout(() => {
+    // サーバーへデータ送信
+    socket.send(jsonSaveData);
+  }, 1500); // 他のデータ送信と被らないように1.5秒遅延させる
+  console.log("サーバーへデータ送信");
 }
 
 //loaddata///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1231,7 +1320,7 @@ function autoRefresh() {
 }
 
 // ページ読み込み後、毎時autoRefreshを呼ぶ
-setInterval(autoRefresh, 3600000);
+setInterval(autoRefresh, 3600000);  //1Hおきにリロード（日付の更新のため）
 
 //backData////////////////////////////////////////////////////////////////////////////////////
 // 1つ戻るデータ格納用変数
@@ -1309,7 +1398,7 @@ function backToData(input) {    //メモリ内の同じところを参照しな�
   else {
     alertSound();  //効果音
     if (input === "button") {
-      alert("もう後戻りなんか出来ない！前を見るんだ('ω')ノ");
+      alert("もう後戻りなんか出来ないよ！('ω')ノ");
     }
   }
 }
@@ -1325,7 +1414,7 @@ function updateVarnishColors() {
   // 入力された日付を取得
   let inputDate = new Date(document.getElementById('stockDate').value);
 
-  // varnishStockの各オブジェクトに対して処理
+  // stockDateの各オブジェクトに対して処理
   for (let i = 0; i < varnishStock.length; i++) {
     // 比較する dueDate を取得
     let dueDate = new Date(varnishStock[i].dueDate);
@@ -1406,6 +1495,7 @@ function eraseData() {
     varnishStock[selectedNum].arrivalDate = "";
     varnishStock[selectedNum].dueDate = "";
     varnishStock[selectedNum].line = "";
+    varnishStock[selectedNum].qr = "";
     enteringTheDepo();  //ワニス入庫優先更新
     stockSort();  //ワニス使用優先更新
   }
@@ -1413,6 +1503,7 @@ function eraseData() {
     highViscosityVarnishStockP710[selectedNum - 12].arrivalDate = "";
     highViscosityVarnishStockP710[selectedNum - 12].dueDate = "";
     highViscosityVarnishStockP710[selectedNum - 12].line = "";
+    highViscosityVarnishStockP710[selectedNum - 12].qr = "";
     enteringTheDepoHighVisP710();  //P710高粘度ワニス入庫優先更新
     stockSortHighVisP710(); //P710高粘度ワニス使用優先更新
   }
@@ -1420,6 +1511,7 @@ function eraseData() {
     highViscosityVarnishStockP810[selectedNum - 16].arrivalDate = "";
     highViscosityVarnishStockP810[selectedNum - 16].dueDate = "";
     highViscosityVarnishStockP810[selectedNum - 16].line = "";
+    highViscosityVarnishStockP810[selectedNum - 16].qr = "";
     enteringTheDepoHighVisP810();  //P810高粘度ワニス入庫優先更新
     stockSortHighVisP810(); //P810高粘度ワニス使用優先更新
   }
